@@ -56,4 +56,3 @@ If you can't contribute in 30 minutes, we've failed. [Open an issue](https://git
 - [Governance](GOVERNANCE.md)
 - [Project Vision](docs/vision.md)
 - [Experiment Schema](schema/experiment_schema.json)
-
