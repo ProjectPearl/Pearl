@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Experiment - Embodied Learning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Submit Experiment</h1>
+    </header>
+    
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="submit.html">Submit Experiment</a>
+        <a href="https://github.com/ananyadevdesai/embodied-learning">GitHub</a>
+    </nav>
+    
+    <main>
+        <section>
+            <h2>Submit Your Experiment</h2>
+            <p>Fill out the form below or upload a JSON file that validates against our <a href="../schema/experiment_schema.json">schema</a>.</p>
+            
+            <form id="experiment-form">
+                <h3>Basic Information</h3>
+                <label>
+                    Experiment ID:
+                    <input type="text" name="experiment_id" required placeholder="e.g., 0001_balance_bot">
+                </label>
+                
+                <label>
+                    Contributor:
+                    <input type="text" name="contributor" required placeholder="GitHub username">
+                </label>
+                
+                <h3>Hardware</h3>
+                <label>
+                    Platform:
+                    <input type="text" name="platform" required placeholder="e.g., ESP32">
+                </label>
+                
+                <label>
+                    Sensors (comma-separated):
+                    <input type="text" name="sensors" required placeholder="e.g., MPU6050, camera">
+                </label>
+                
+                <label>
+                    Actuators (comma-separated):
+                    <input type="text" name="actuators" required placeholder="e.g., DC motor, servo">
+                </label>
+                
+                <label>
+                    Cost (USD):
+                    <input type="number" name="cost_usd" min="0" step="0.01">
+                </label>
+                
+                <h3>Outcome</h3>
+                <label>
+                    Success:
+                    <select name="success" required>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </label>
+                
+                <label>
+                    Duration (seconds):
+                    <input type="number" name="duration_seconds" required min="0" step="0.1">
+                </label>
+                
+                <label>
+                    Reward:
+                    <input type="number" name="reward" required step="0.01">
+                </label>
+                
+                <label>
+                    Failure Reason (if unsuccessful):
+                    <textarea name="failure_reason" rows="3"></textarea>
+                </label>
+                
+                <h3>Additional Data</h3>
+                <label>
+                    Notes:
+                    <textarea name="notes" rows="5"></textarea>
+                </label>
+                
+                <label>
+                    Upload JSON file (optional):
+                    <input type="file" name="json_file" accept=".json">
+                </label>
+                
+                <button type="submit">Submit Experiment</button>
+            </form>
+            
+            <div id="validation-result"></div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Licensed under MIT (code) and CC BY 4.0 (data)</p>
+    </footer>
+    
+    <script>
+        // Basic form handling - in production, this would submit to backend
+        document.getElementById('experiment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('In production, this would submit to the backend. For now, please open a PR on GitHub with your experiment data.');
+        });
+    </script>
+</body>
+</html>
+
