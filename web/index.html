@@ -3,405 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#030308">
-    <title>PEARL - Physical Embodied Autonomous Robotics Learning</title>
+    <meta name="theme-color" content="#000000">
+    <title>PEARL</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
     <style>
-        /* Hero Section */
         .hero {
-            min-height: 50vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 4rem 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            padding: 2rem;
         }
         
         .hero h1 {
-            font-size: 5rem;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .hero .tagline {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-        }
-        
-        .hero .description {
-            max-width: 600px;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 2.5rem;
-        }
-        
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        /* Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1px;
-            background: var(--border-subtle);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-item {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-item:hover {
-            background: var(--bg-elevated);
-        }
-        
-        .stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
+            font-size: clamp(5rem, 20vw, 12rem);
             font-weight: 600;
-            color: var(--neon-blue);
-            text-shadow: var(--glow-blue);
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
         }
         
-        .stat-value.error-color {
-            color: var(--error);
-            text-shadow: var(--glow-error);
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--gray-500);
+            margin-bottom: 3rem;
+            max-width: 400px;
         }
         
-        .stat-value.success-color {
-            color: var(--success);
-            text-shadow: var(--glow-success);
+        .stats-section {
+            padding: 6rem 2rem;
+            background: var(--gray-900);
         }
         
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+        .stats-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+        }
+        
+        .stat .value {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+        
+        .stat .label {
+            color: var(--gray-500);
+            font-size: 0.875rem;
             margin-top: 0.5rem;
         }
         
-        /* Principles Grid */
-        .principles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-        
-        .principle-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .principle-card:hover {
-            border-color: var(--border-neon);
-            box-shadow: var(--glow-blue);
-            transform: translateY(-2px);
-        }
-        
-        .principle-card .icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .principle-card h3 {
-            font-size: 0.9rem;
-            color: var(--neon-blue);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .principle-card p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-        
-        /* Not List */
-        .not-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem;
-            list-style: none;
-        }
-        
-        .not-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border-radius: 4px;
-            border-left: 2px solid var(--error);
-        }
-        
-        /* Quick Start */
-        .quick-start-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        
-        .quick-start-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .quick-start-card:hover {
-            border-color: var(--border-neon);
-        }
-        
-        .quick-start-card h3 {
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .quick-start-card p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-        
-        .quick-start-card a {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        /* Schema Section */
-        .schema-info {
-            background: var(--bg-card);
-            border: 1px solid var(--border-neon);
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-        
-        .schema-info code {
-            background: var(--bg-deep);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--neon-blue);
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>PEARL</h1>
-        <p class="tagline">Physical Embodied Autonomous Robotics Learning</p>
-        <p class="description">
-            Open-source infrastructure for collecting and sharing real-world robotics data. 
-            Failures are features. Environment context is required. Records are immutable.
-        </p>
-        <div class="cta-group">
-            <a href="experiments.html" class="btn">View Experiments</a>
-            <a href="submit.html" class="btn secondary">Submit Data</a>
-            <a href="failures.html" class="btn secondary">Failure Index</a>
-        </div>
-    </div>
-    
     <nav>
         <a href="index.html" class="active">Home</a>
         <a href="submit.html">Submit</a>
         <a href="experiments.html">Experiments</a>
-        <a href="failures.html">Failures</a>
         <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
     </nav>
     
-    <main>
-        <!-- Stats -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value" id="stat-total">—</div>
-                <div class="stat-label">Experiments</div>
+    <div class="hero">
+        <h1>PEARL</h1>
+        <p>Open infrastructure for real-world robotics data. Failures are features.</p>
+        <div class="cta-group">
+            <a href="experiments.html" class="btn">View Experiments</a>
+            <a href="submit.html" class="btn secondary">Submit</a>
+        </div>
+    </div>
+    
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="value" id="stat-total">—</div>
+                <div class="label">Experiments</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value error-color" id="stat-failures">—</div>
-                <div class="stat-label">Failures Logged</div>
+            <div class="stat">
+                <div class="value" id="stat-failures">—</div>
+                <div class="label">Failures</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value success-color">6</div>
-                <div class="stat-label">Task Types</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">0.2</div>
-                <div class="stat-label">Schema Ver.</div>
+            <div class="stat">
+                <div class="value">v0.2</div>
+                <div class="label">Schema</div>
             </div>
         </div>
-        
-        <!-- Principles -->
-        <section>
-            <h2>Core Principles</h2>
-            <div class="principles-grid">
-                <div class="principle-card">
-                    <div class="icon">🔒</div>
-                    <h3>Immutable Records</h3>
-                    <p>Once submitted, experiments cannot be edited. Prevents hindsight bias. Ensures data integrity.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="icon">❌</div>
-                    <h3>Failures First</h3>
-                    <p>Default view shows failures before successes. Hardware learning = learning from failure.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="icon">📋</div>
-                    <h3>Strict Schema</h3>
-                    <p>Missing reward, outcome, or hardware? Rejected. Quality over quantity. No optional everything.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="icon">🌍</div>
-                    <h3>Environment Required</h3>
-                    <p>Surface, lighting, load — all mandatory. Physical learning without context is meaningless.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="icon">🔧</div>
-                    <h3>Hardware Fingerprints</h3>
-                    <p>Structured descriptions hashed to hardware_id. Enables cross-experiment comparison.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="icon">📊</div>
-                    <h3>Reproducibility Score</h3>
-                    <p>Auto-scored based on metadata completeness. Good logging encouraged without social policing.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- What This Is NOT -->
-        <section>
-            <h2>What This Is NOT</h2>
-            <ul class="not-list">
-                <li>🚫 Not a startup</li>
-                <li>🚫 Not AGI</li>
-                <li>🚫 Not simulation-only</li>
-                <li>🚫 Not closed datasets</li>
-                <li>🚫 Not ML models (yet)</li>
-                <li>🚫 Not gamified</li>
-            </ul>
-        </section>
-        
-        <!-- Quick Start -->
-        <section>
-            <h2>Get Started</h2>
-            <div class="quick-start-grid">
-                <div class="quick-start-card">
-                    <h3>📥 Submit Data</h3>
-                    <p>Run a physical experiment, document the outcome, submit structured data.</p>
-                    <a href="submit.html">Submit experiment →</a>
-                </div>
-                <div class="quick-start-card">
-                    <h3>📖 Browse Data</h3>
-                    <p>Explore existing experiments, filter by failure mode, learn from what didn't work.</p>
-                    <a href="experiments.html">View experiments →</a>
-                </div>
-                <div class="quick-start-card">
-                    <h3>🔬 Read Docs</h3>
-                    <p>Understand canonical tasks, failure ontology, and schema requirements.</p>
-                    <a href="https://github.com/ProjectPearl/Pearl/tree/main/docs" target="_blank">Documentation →</a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Schema -->
-        <section>
-            <h2>Schema v0.2</h2>
-            <div class="schema-info">
-                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
-                    Breaking changes require major version bump. Required fields:
-                </p>
-                <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 2;">
-                    <code>schema_version</code>
-                    <code>experiment_id</code>
-                    <code>timestamp</code>
-                    <code>contributor</code>
-                    <code>task</code>
-                    <code>hardware</code>
-                    <code>environment</code>
-                    <code>outcome</code>
-                    <code>reward</code>
-                </p>
-                <p style="margin-top: 1rem;">
-                    <a href="schema.json" target="_blank">View full schema →</a>
-                </p>
-            </div>
-        </section>
-    </main>
+    </div>
     
     <footer>
-        <p>PEARL — <span class="text-neon">MIT</span> (code) · <span class="text-neon">CC BY 4.0</span> (data)</p>
-        <p style="margin-top: 0.5rem;">
-            <a href="https://github.com/ProjectPearl/Pearl">GitHub</a> · 
-            <a href="https://github.com/ProjectPearl/Pearl/blob/main/CONTRIBUTING.md">Contributing</a> · 
-            <a href="https://github.com/ProjectPearl/Pearl/blob/main/GOOD_FIRST_ISSUES.md">Good First Issues</a>
-        </p>
+        <p>MIT (code) · CC BY 4.0 (data)</p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script>
-        const SUPABASE_URL = 'https://djzcyhejjlqpbhnvpven.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqemN5aGVqamxxcGJobnZwdmVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NzY5MzYsImV4cCI6MjA4MTQ1MjkzNn0.Om3eh8ol_t7knM5WppMD5hPpyEH2GVieEi9H28bDuLQ';
+        const SUPABASE_URL = SUPABASE_CONFIG?.url || '';
+        const SUPABASE_KEY = SUPABASE_CONFIG?.anonKey || '';
         
         window.onload = async function() {
-            if (typeof supabase !== 'undefined' && supabase.createClient) {
+            if (SUPABASE_URL && SUPABASE_KEY && typeof supabase !== 'undefined') {
                 try {
                     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     const { data } = await client.from('experiments').select('outcome');
-                    
                     if (data) {
                         document.getElementById('stat-total').textContent = data.length;
-                        document.getElementById('stat-failures').textContent = 
-                            data.filter(e => !e.outcome?.success).length;
+                        document.getElementById('stat-failures').textContent = data.filter(e => !e.outcome?.success).length;
                     }
                 } catch (e) {}
             }
         };
-        
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(() => {});
-        }
     </script>
 </body>
 </html>

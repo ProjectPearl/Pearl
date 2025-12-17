@@ -1,8 +1,8 @@
-// Service Worker for Embodied Learning PWA
+// Service Worker for PEARL PWA
 // Provides offline read-only access to experiments
 
-const CACHE_NAME = 'embodied-learning-' + CACHE_VERSION;
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
+const CACHE_NAME = 'pearl-' + CACHE_VERSION;
 const OFFLINE_PAGES = [
   './',
   './index.html',

@@ -65,8 +65,8 @@ echo ""
 
 # Check schema
 echo "Checking schema version..."
-if grep -q '"version": "0.1"' schema/experiment_schema.json; then
-    echo "  ✅ Schema version 0.1 (frozen)"
+if grep -q '"version": "0.2"' schema/experiment_schema.json; then
+    echo "  ✅ Schema version 0.2"
 else
     echo "  ⚠️  Schema version not found"
 fi

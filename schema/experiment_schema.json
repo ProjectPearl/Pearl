@@ -5,25 +5,18 @@
   "description": "Schema for real-world embodied learning experiments. Breaking changes require major version bump.",
   "type": "object",
   "required": [
-    "schema_version",
     "experiment_id",
     "timestamp",
     "contributor",
     "task",
     "hardware",
-    "environment",
     "outcome",
     "reward"
   ],
   "properties": {
-    "schema_version": {
-      "type": "string",
-      "enum": ["0.1", "0.2"],
-      "description": "Schema version this experiment conforms to"
-    },
     "experiment_id": {
       "type": "string",
-      "pattern": "^[0-9]{4}_[a-z0-9_]+$",
+      "pattern": "^[0-9]{4}_[a-zA-Z0-9_]+$",
       "description": "Unique identifier (format: NNNN_descriptive_name)"
     },
     "timestamp": {
@@ -35,10 +28,6 @@
       "type": "string",
       "minLength": 1,
       "description": "GitHub username (required, no anonymous submissions)"
-    },
-    "parent_experiment": {
-      "type": "string",
-      "description": "Reference to previous experiment this builds on (lineage tracking)"
     },
     "task": {
       "type": "object",
@@ -100,41 +89,6 @@
         "hardware_id": {
           "type": "string",
           "description": "Hash of hardware config for cross-experiment comparison"
-        }
-      }
-    },
-    "environment": {
-      "type": "object",
-      "required": ["surface", "lighting", "load"],
-      "properties": {
-        "surface": {
-          "type": "string",
-          "enum": ["tile", "carpet", "wood", "concrete", "dirt", "grass", "other"],
-          "description": "Operating surface type"
-        },
-        "lighting": {
-          "type": "string",
-          "enum": ["indoor_artificial", "indoor_natural", "outdoor_day", "outdoor_night", "mixed"],
-          "description": "Lighting conditions"
-        },
-        "load": {
-          "type": "string",
-          "enum": ["none", "light", "medium", "heavy"],
-          "description": "Payload load on robot"
-        },
-        "temperature_c": {
-          "type": "number",
-          "description": "Ambient temperature in Celsius"
-        },
-        "humidity_percent": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 100,
-          "description": "Relative humidity percentage"
-        },
-        "notes": {
-          "type": "string",
-          "description": "Additional environment notes"
         }
       }
     },

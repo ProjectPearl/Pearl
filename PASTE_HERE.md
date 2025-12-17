@@ -13,13 +13,13 @@
 
 ### Step 2: Open `web/config.js`
 
-1. Open the file: `/Volumes/MY SANDISK/PEARL 2/web/config.js`
+1. Open the file: `web/config.js`
 2. You'll see this:
 
 ```javascript
 const SUPABASE_CONFIG = {
-  url: '', // Your Supabase project URL (e.g., 'https://xxxxx.supabase.co')
-  anonKey: '', // Your Supabase anon/public key
+  url: '',      // e.g., 'https://xxxxx.supabase.co'
+  anonKey: '',  // e.g., 'eyJhbGciOiJIUzI1NiIs...'
 };
 ```
 
@@ -29,18 +29,12 @@ Replace the empty strings with your actual values:
 
 ```javascript
 const SUPABASE_CONFIG = {
-  url: 'https://your-actual-project-id.supabase.co',  // ← Paste your Project URL here
-  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-key-here',  // ← Paste your anon key here
+  url: 'https://your-actual-project-id.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-key-here',
 };
 ```
 
-**Example:**
-```javascript
-const SUPABASE_CONFIG = {
-  url: 'https://abcdefghijklmnop.supabase.co',
-  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoaWprbG1ub3AiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTU2Nzg5MCwiZXhwIjoxOTU1MTQzODkwfQ.abc123xyz789',
-};
-```
+⚠️ **Do NOT commit real credentials to git!**
 
 **Save the file!**
 
@@ -54,42 +48,23 @@ const SUPABASE_CONFIG = {
 2. Click **SQL Editor** in the left sidebar
 3. Click **New query**
 
-### Step 2: Paste This SQL Code
+### Step 2: Use CREATE_TABLE.sql
 
-Copy and paste this entire block:
+> ⚠️ **Important**: Use the SQL from `CREATE_TABLE.sql` in this repository.
+> Do NOT use any inline SQL from old documentation.
 
-```sql
--- Create experiments table
-CREATE TABLE IF NOT EXISTS experiments (
-  id BIGSERIAL PRIMARY KEY,
-  experiment_id TEXT NOT NULL,
-  timestamp TIMESTAMPTZ NOT NULL,
-  contributor TEXT,
-  hardware JSONB NOT NULL,
-  sensors JSONB,
-  actions JSONB,
-  outcome JSONB NOT NULL,
-  reward NUMERIC NOT NULL,
-  notes TEXT,
-  failures JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+1. Open the file `CREATE_TABLE.sql` in this repository
+2. Copy the **entire contents**
+3. Paste into the Supabase SQL Editor
 
--- Create index for faster queries
-CREATE INDEX IF NOT EXISTS idx_experiments_timestamp ON experiments(timestamp DESC);
-CREATE INDEX IF NOT EXISTS idx_experiments_experiment_id ON experiments(experiment_id);
-
--- Enable Row Level Security (RLS)
-ALTER TABLE experiments ENABLE ROW LEVEL SECURITY;
-
--- Create policy to allow anyone to read
-CREATE POLICY "Allow public read access" ON experiments
-  FOR SELECT USING (true);
-
--- Create policy to allow anyone to insert
-CREATE POLICY "Allow public insert" ON experiments
-  FOR INSERT WITH CHECK (true);
-```
+The current schema includes:
+- `experiment_id` (TEXT) - Unique identifier
+- `task` (JSONB) - Task type and description
+- `hardware` (JSONB) - Hardware configuration
+- `outcome` (JSONB) - Success/failure and duration
+- `reward` (NUMERIC) - Reward signal
+- Immutability (no UPDATE/DELETE policies)
+- Rate limiting (10 experiments/hour per contributor)
 
 ### Step 3: Run the SQL
 
@@ -103,34 +78,31 @@ CREATE POLICY "Allow public insert" ON experiments
 ### The Flow:
 
 1. **User fills form** → `web/submit.html`
-2. **Form validates** → Checks against `schema/experiment_schema.json`
+2. **Form validates** → Checks required fields
 3. **JavaScript sends data** → Uses `config.js` to connect to Supabase
-4. **Supabase stores data** → Saves to `experiments` table
-5. **User views data** → `web/experiments.html` fetches from Supabase
+4. **Supabase stores data** → Saves to `experiments` table (immutable)
+5. **User views data** → `web/experiments.html` shows failures first
 
-### Without Supabase (Current State):
+### Required Fields:
 
-- ✅ Form validation works
-- ✅ JSON upload works
-- ❌ Data doesn't save (shows "Supabase not configured")
-- ❌ Can't view experiments
-
-### With Supabase (After Setup):
-
-- ✅ Form validation works
-- ✅ JSON upload works
-- ✅ Data saves to database
-- ✅ Can view all experiments
+- `experiment_id` - Format: 0001_name
+- `timestamp` - Auto-generated
+- `contributor` - GitHub username
+- `task` - Type + description (min 10 chars)
+- `hardware` - Platform, MCU, motors, power, sensors, actuators
+- `outcome` - Success + duration + failure_mode (if failed)
+- `reward` - Numeric value
 
 ---
 
 ## Testing After Setup
 
-1. **Open**: http://localhost:8000/submit.html
-2. **Fill form** and submit
-3. **Should see**: Green success message (not error)
-4. **Open**: http://localhost:8000/experiments.html
-5. **Should see**: Your submitted experiment in the list
+1. Start server: `cd web && python3 -m http.server 8080`
+2. **Open**: http://localhost:8080/submit.html
+3. **Fill form** and submit
+4. **Should see**: Green success message
+5. **Open**: http://localhost:8080/experiments.html
+6. **Should see**: Your submitted experiment
 
 ---
 
@@ -138,16 +110,17 @@ CREATE POLICY "Allow public insert" ON experiments
 
 **"Supabase not configured" error:**
 - Check `web/config.js` has both `url` and `anonKey` filled in
-- Make sure there are no extra spaces or quotes
-- Refresh the browser page
+- Hard refresh the browser (Cmd+Shift+R)
 
 **"Database table not found" error:**
-- Go back to Supabase SQL Editor
-- Make sure you ran the SQL code
+- Make sure you ran the SQL from `CREATE_TABLE.sql`
 - Check Table Editor to see if `experiments` table exists
 
+**"Column not found" errors:**
+- Your database has an old schema
+- Drop the table and recreate using `CREATE_TABLE.sql`
+
 **Still not working?**
-- Open browser console (F12)
+- Open browser console (Cmd+Option+I on Mac, F12 on Windows)
 - Look for error messages
 - Check Network tab to see if requests are being sent
-

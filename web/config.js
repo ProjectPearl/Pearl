@@ -9,4 +9,3 @@ const SUPABASE_CONFIG = {
 
 // Note: The Supabase library is loaded via CDN in each HTML file
 // Do NOT set "supabase = null" here - it would overwrite the CDN library!
-

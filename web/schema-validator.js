@@ -90,8 +90,8 @@ async function loadValidator() {
     return validator;
   } catch (error) {
     console.error('Failed to load schema:', error);
-    // Return a basic validator as fallback
-    validator = new SchemaValidator({ required: ['experiment_id', 'timestamp', 'hardware', 'sensors', 'actions', 'outcome', 'reward'] });
+    // Return a basic validator as fallback (must match v0.2 schema)
+    validator = new SchemaValidator({ required: ['experiment_id', 'timestamp', 'contributor', 'task', 'hardware', 'outcome', 'reward'] });
     return validator;
   }
 }

@@ -10,11 +10,9 @@
 
 CREATE TABLE IF NOT EXISTS experiments (
   id BIGSERIAL PRIMARY KEY,
-  schema_version TEXT NOT NULL DEFAULT '0.2',
   experiment_id TEXT NOT NULL UNIQUE,
   timestamp TIMESTAMPTZ NOT NULL,
   contributor TEXT NOT NULL,
-  parent_experiment TEXT REFERENCES experiments(experiment_id),
   
   -- Task (required)
   task JSONB NOT NULL,
@@ -24,9 +22,6 @@ CREATE TABLE IF NOT EXISTS experiments (
   hardware_id TEXT GENERATED ALWAYS AS (
     encode(sha256(hardware::text::bytea), 'hex')
   ) STORED,
-  
-  -- Environment context (required)
-  environment JSONB NOT NULL,
   
   -- Data
   sensors_data JSONB,
@@ -44,8 +39,6 @@ CREATE TABLE IF NOT EXISTS experiments (
       WHEN hardware->>'mcu' IS NOT NULL 
        AND hardware->>'motors' IS NOT NULL 
        AND hardware->>'power_source' IS NOT NULL
-       AND environment->>'surface' IS NOT NULL
-       AND environment->>'lighting' IS NOT NULL
       THEN 1.0
       ELSE 0.5
     END
@@ -55,11 +48,6 @@ CREATE TABLE IF NOT EXISTS experiments (
   
   -- Constraints
   CONSTRAINT valid_task CHECK (task->>'type' IS NOT NULL),
-  CONSTRAINT valid_environment CHECK (
-    environment->>'surface' IS NOT NULL AND
-    environment->>'lighting' IS NOT NULL AND
-    environment->>'load' IS NOT NULL
-  ),
   CONSTRAINT valid_outcome CHECK (outcome->>'success' IS NOT NULL)
 );
 

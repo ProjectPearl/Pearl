@@ -99,4 +99,3 @@ CREATE POLICY "Allow public insert" ON experiments
 - Submit your first experiment!
 - View experiments at `web/experiments.html`
 - Check out the example experiment in `experiments/0002_navigation_bot/`
-
