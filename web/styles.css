@@ -3,9 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg: #1e2140;
-    --bg-dark: #181a32;
-    --bg-card: #252850;
+    --bg: #1a1a40;
+    --bg-dark: #14142e;
+    --bg-card: #24244a;
     --white: #ffffff;
     --text: #ffffff;
     --text-muted: #9ca3c7;
