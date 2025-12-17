@@ -1,24 +1,24 @@
 /* PEARL - ModerateHatespeech Exact Theme */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg: #1a1a40;
-    --bg-dark: #14142e;
-    --bg-card: #24244a;
+    --bg: #0e2b54;
+    --bg-dark: #0a2244;
+    --bg-card: #143562;
     --white: #ffffff;
     --text: #ffffff;
-    --text-muted: #9ca3c7;
+    --text-muted: #a0b4cc;
     --accent: #ffffff;
     --success: #22c55e;
     --error: #ef4444;
-    --border: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: 'Outfit', -apple-system, sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
@@ -88,7 +88,7 @@ nav {
 
 /* Hero */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - 70px);
     display: flex;
     align-items: center;
     padding: 6rem 3rem;
@@ -316,6 +316,16 @@ select {
 textarea {
     resize: vertical;
     min-height: 100px;
+}
+
+textarea.code-input {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    background: #0a1628;
+    min-height: 200px;
+    white-space: pre;
+    overflow-x: auto;
 }
 
 button[type="submit"] {

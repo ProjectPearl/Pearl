@@ -4,8 +4,8 @@
   "description": "Open-source project to collect and share real-world embodied learning data from low-cost physical systems",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a40",
-  "theme_color": "#1a1a40",
+  "background_color": "#0e2b54",
+  "theme_color": "#0e2b54",
   "orientation": "portrait-primary",
   "icons": [
     {

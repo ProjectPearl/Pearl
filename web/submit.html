@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a1a40">
+    <meta name="theme-color" content="#0e2b54">
     <title>Submit - PEARL</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
     <nav>
@@ -131,6 +131,25 @@
             </div>
             
             <div class="form-section">
+                <h3>Code</h3>
+                <label>
+                    <span>Source Code (optional)</span>
+                    <textarea name="code" rows="10" class="code-input" placeholder="// Paste your experiment code here (Arduino, Python, etc.)"></textarea>
+                </label>
+                <label>
+                    <span>Language</span>
+                    <select name="code_language">
+                        <option value="">None</option>
+                        <option value="arduino">Arduino/C++</option>
+                        <option value="python">Python</option>
+                        <option value="micropython">MicroPython</option>
+                        <option value="rust">Rust</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+            </div>
+            
+            <div class="form-section">
                 <h3>Notes</h3>
                 <label>
                     <textarea name="notes" rows="3" placeholder="Optional observations"></textarea>
@@ -191,6 +210,7 @@
                 },
                 outcome: { success, duration_seconds: parseFloat(form.duration_seconds.value) },
                 reward: parseFloat(form.reward.value),
+                code: form.code.value.trim() ? { source: form.code.value.trim(), language: form.code_language.value || 'other' } : undefined,
                 notes: form.notes.value.trim() || undefined
             };
             

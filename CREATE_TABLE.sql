@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS experiments (
   outcome JSONB NOT NULL,
   reward NUMERIC NOT NULL,
   
+  -- Code (optional)
+  code JSONB,
+  
   -- Metadata
   notes TEXT,
   reproducibility_score NUMERIC GENERATED ALWAYS AS (

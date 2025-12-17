@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a1a40">
+    <meta name="theme-color" content="#0e2b54">
     <title>PEARL</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=5">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -28,89 +28,5 @@
             </div>
         </div>
     </div>
-    
-    <div class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="value" id="stat-total">0</div>
-                <div class="label">experiments logged</div>
-            </div>
-            <div class="stat-card">
-                <div class="value" id="stat-failures">0</div>
-                <div class="label">failures documented</div>
-            </div>
-            <div class="stat-card">
-                <div class="value">100%</div>
-                <div class="label">immutable records</div>
-            </div>
-            <div class="stat-card">
-                <div class="value">v0.2</div>
-                <div class="label">schema version</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="features-section">
-        <div class="section-header">
-            <h2>Why PEARL?</h2>
-            <p>Real robots fail in ways simulations never capture</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="icon">📊</div>
-                <h3>Structured Data</h3>
-                <p>Schema-validated experiments with required fields for task, hardware, and outcome.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔒</div>
-                <h3>Immutable Records</h3>
-                <p>Once submitted, experiments cannot be edited. No hindsight bias.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">❌</div>
-                <h3>Failures First</h3>
-                <p>Default view shows failures. Learning happens at the edge cases.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔧</div>
-                <h3>Hardware Fingerprints</h3>
-                <p>Compare experiments across similar hardware configurations.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">📈</div>
-                <h3>Pattern Recognition</h3>
-                <p>Standardized failure modes reveal patterns across projects.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🌐</div>
-                <h3>Open Access</h3>
-                <p>MIT licensed code. CC BY 4.0 data. Free forever.</p>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a> · MIT License</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script>
-        const SUPABASE_URL = SUPABASE_CONFIG?.url || '';
-        const SUPABASE_KEY = SUPABASE_CONFIG?.anonKey || '';
-        
-        window.onload = async function() {
-            if (SUPABASE_URL && SUPABASE_KEY && typeof supabase !== 'undefined') {
-                try {
-                    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    const { data } = await client.from('experiments').select('outcome');
-                    if (data) {
-                        document.getElementById('stat-total').textContent = data.length;
-                        document.getElementById('stat-failures').textContent = data.filter(e => !e.outcome?.success).length;
-                    }
-                } catch (e) {}
-            }
-        };
-    </script>
 </body>
 </html>
