@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Connection Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="results"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(msg, type = 'info') {
+            const p = document.createElement('p');
+            p.className = type;
+            p.textContent = msg;
+            results.appendChild(p);
+            console.log(msg);
+        }
+        
+        // Test 1: Check Supabase library
+        addResult('Test 1: Checking Supabase library...', 'info');
+        setTimeout(() => {
+            if (typeof supabase !== 'undefined') {
+                addResult('✅ Supabase library loaded', 'success');
+            } else {
+                addResult('❌ Supabase library NOT loaded', 'error');
+                return;
+            }
+            
+            // Test 2: Check config
+            addResult('Test 2: Checking config...', 'info');
+            if (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
+                addResult('✅ Config loaded: ' + SUPABASE_CONFIG.url, 'success');
+            } else {
+                addResult('❌ Config missing or empty', 'error');
+                return;
+            }
+            
+            // Test 3: Create client
+            addResult('Test 3: Creating Supabase client...', 'info');
+            try {
+                const client = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+                addResult('✅ Client created successfully', 'success');
+                
+                // Test 4: Try to query
+                addResult('Test 4: Testing database connection...', 'info');
+                client.from('experiments').select('count').then(({ data, error }) => {
+                    if (error) {
+                        addResult('❌ Database error: ' + error.message, 'error');
+                    } else {
+                        addResult('✅ Database connection successful!', 'success');
+                        addResult('Everything is working! You can now submit experiments.', 'success');
+                    }
+                });
+            } catch (error) {
+                addResult('❌ Error creating client: ' + error.message, 'error');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+

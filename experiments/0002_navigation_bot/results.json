@@ -1,0 +1,120 @@
+{
+  "experiment_id": "0002_navigation_bot",
+  "timestamp": "2024-01-20T14:30:00Z",
+  "contributor": "maintainer",
+  "hardware": {
+    "platform": "ESP32 DevKit v1",
+    "sensors": ["HC-SR04", "encoder_left", "encoder_right"],
+    "actuators": ["DC_motor_left", "DC_motor_right"],
+    "cost_usd": 29.0
+  },
+  "sensors": {
+    "ultrasonic_distance_cm": [150, 145, 140, 135, 130, 125, 120, 115, 110, 105, 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 18, 22, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150],
+    "left_encoder": [0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216, 228, 240, 252, 264, 276, 288, 300, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312],
+    "right_encoder": [0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216, 228, 240, 252, 264, 276, 288, 300, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312, 312]
+  },
+  "actions": [
+    {"timestamp": 0.0, "action_type": "motor_command", "values": [0, 0]},
+    {"timestamp": 0.1, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.2, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.6, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.7, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.8, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 0.9, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.0, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.1, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.2, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.6, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.7, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.8, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 1.9, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.0, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.1, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.2, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 2.6, "action_type": "motor_command", "values": [0, 0]},
+    {"timestamp": 2.7, "action_type": "motor_command", "values": [0, 0]},
+    {"timestamp": 2.8, "action_type": "motor_command", "values": [102, -102]},
+    {"timestamp": 2.9, "action_type": "motor_command", "values": [102, -102]},
+    {"timestamp": 3.0, "action_type": "motor_command", "values": [102, -102]},
+    {"timestamp": 3.1, "action_type": "motor_command", "values": [102, -102]},
+    {"timestamp": 3.2, "action_type": "motor_command", "values": [0, 0]},
+    {"timestamp": 3.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.6, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.7, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.8, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 3.9, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.0, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.1, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.2, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.6, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.7, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.8, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 4.9, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.0, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.1, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.2, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.3, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.4, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.5, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.6, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.7, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.8, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 5.9, "action_type": "motor_command", "values": [153, 153]},
+    {"timestamp": 6.0, "action_type": "motor_command", "values": [153, 153]}
+  ],
+  "outcome": {
+    "success": true,
+    "duration_seconds": 6.0,
+    "metrics": {
+      "distance_traveled_cm": 78.0,
+      "obstacles_avoided": 1,
+      "turns_executed": 1,
+      "final_distance_cm": 150
+    },
+    "failure_reason": null
+  },
+  "reward": 78.0,
+  "notes": "Successfully navigated forward, detected obstacle at 20cm, turned right, continued. Did not reach full 1m target but demonstrated obstacle avoidance. Ultrasonic sensor worked well on hard floor. Encoder calibration needs improvement for accurate distance measurement.",
+  "failures": [
+    {
+      "timestamp": 0.5,
+      "description": "False positive: ultrasonic read 15cm when nothing present (sensor noise)",
+      "severity": "minor"
+    },
+    {
+      "timestamp": 1.2,
+      "description": "Motor speed inconsistent - battery voltage drop",
+      "severity": "minor"
+    },
+    {
+      "timestamp": 2.6,
+      "description": "Turn not precise - overshot 90 degrees, had to correct",
+      "severity": "moderate"
+    },
+    {
+      "timestamp": 3.8,
+      "description": "Encoder reading stalled during turn (mechanical issue)",
+      "severity": "minor"
+    },
+    {
+      "timestamp": 4.2,
+      "description": "Distance calculation off by ~20% (encoder calibration needed)",
+      "severity": "moderate"
+    }
+  ]
+}
+

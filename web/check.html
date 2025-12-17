@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Check</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .ok { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Quick Configuration Check</h1>
+    <div id="check"></div>
+    
+    <script src="config.js"></script>
+    <script>
+        const div = document.getElementById('check');
+        
+        // Check 1: Config file loaded
+        if (typeof SUPABASE_CONFIG !== 'undefined') {
+            div.innerHTML += '<p class="ok">✅ Config file loaded</p>';
+            div.innerHTML += '<p>URL: ' + (SUPABASE_CONFIG.url || 'MISSING') + '</p>';
+            div.innerHTML += '<p>Key: ' + (SUPABASE_CONFIG.anonKey ? 'PRESENT (' + SUPABASE_CONFIG.anonKey.substring(0, 20) + '...)' : 'MISSING') + '</p>';
+        } else {
+            div.innerHTML += '<p class="fail">❌ Config file NOT loaded</p>';
+        }
+        
+        // Check 2: Supabase library
+        setTimeout(() => {
+            if (typeof supabase !== 'undefined') {
+                div.innerHTML += '<p class="ok">✅ Supabase library loaded</p>';
+            } else {
+                div.innerHTML += '<p class="fail">❌ Supabase library NOT loaded (CDN issue?)</p>';
+            }
+        }, 2000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>
+

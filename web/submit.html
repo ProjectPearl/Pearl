@@ -3,111 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Experiment - Embodied Learning</title>
+    <meta name="theme-color" content="#030308">
+    <title>Submit Experiment - PEARL</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .form-header a {
+            color: var(--neon-blue);
+        }
+        
+        .form-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-section:hover {
+            border-color: var(--border-neon);
+        }
+        
+        .form-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-dim);
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .validation-result {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .validation-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            box-shadow: var(--glow-success);
+        }
+        
+        .validation-result.error {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--error);
+            color: #ff6b8a;
+            box-shadow: var(--glow-error);
+        }
+        
+        .validation-result.pending {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        
+        #failure-fields {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-dim);
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Submit Experiment</h1>
+        <h1>PEARL</h1>
+        <p>Submit Experiment</p>
     </header>
     
     <nav>
         <a href="index.html">Home</a>
-        <a href="submit.html">Submit Experiment</a>
-        <a href="https://github.com/ananyadevdesai/embodied-learning">GitHub</a>
+        <a href="submit.html" class="active">Submit</a>
+        <a href="experiments.html">Experiments</a>
+        <a href="failures.html">Failures</a>
+        <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
     </nav>
     
     <main>
-        <section>
-            <h2>Submit Your Experiment</h2>
-            <p>Fill out the form below or upload a JSON file that validates against our <a href="../schema/experiment_schema.json">schema</a>.</p>
+        <div class="form-header">
+            <p>
+                All fields marked <span style="color: var(--error);">*</span> are required. 
+                Data validates against <a href="schema.json" target="_blank">schema v0.2</a>. 
+                Once submitted, records <strong>cannot be edited</strong>.
+            </p>
+        </div>
+        
+        <form id="experiment-form">
+            <!-- Basic Info -->
+            <div class="form-section">
+                <h3>📋 Basic Information</h3>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Experiment ID</span>
+                        <input type="text" name="experiment_id" required pattern="[0-9]{4}_[a-z0-9_]+" placeholder="0001_balance_test">
+                        <p class="help-text">Format: 0001_name</p>
+                    </label>
+                    <label>
+                        <span class="required">Contributor (GitHub)</span>
+                        <input type="text" name="contributor" required placeholder="your_username">
+                    </label>
+                </div>
+                <label>
+                    <span>Parent Experiment</span>
+                    <input type="text" name="parent_experiment" placeholder="0000_previous_experiment">
+                    <p class="help-text">Reference to experiment this builds on (lineage)</p>
+                </label>
+            </div>
             
-            <form id="experiment-form">
-                <h3>Basic Information</h3>
+            <!-- Task -->
+            <div class="form-section">
+                <h3>🎯 Task</h3>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Task Type</span>
+                        <select name="task_type" required>
+                            <option value="">Select task...</option>
+                            <option value="balance">Balance</option>
+                            <option value="navigation">Navigation</option>
+                            <option value="grasping">Grasping</option>
+                            <option value="locomotion">Locomotion</option>
+                            <option value="tracking">Tracking</option>
+                            <option value="avoidance">Avoidance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
+                </div>
                 <label>
-                    Experiment ID:
-                    <input type="text" name="experiment_id" required placeholder="e.g., 0001_balance_bot">
+                    <span class="required">Task Description</span>
+                    <textarea name="task_description" required minlength="10" placeholder="What was the robot trying to do? Be specific (min 10 chars)."></textarea>
                 </label>
-                
                 <label>
-                    Contributor:
-                    <input type="text" name="contributor" required placeholder="GitHub username">
+                    <span>Success Criteria</span>
+                    <input type="text" name="success_criteria" placeholder="e.g., Stay balanced for 30 seconds">
                 </label>
-                
-                <h3>Hardware</h3>
-                <label>
-                    Platform:
-                    <input type="text" name="platform" required placeholder="e.g., ESP32">
-                </label>
-                
-                <label>
-                    Sensors (comma-separated):
-                    <input type="text" name="sensors" required placeholder="e.g., MPU6050, camera">
-                </label>
-                
-                <label>
-                    Actuators (comma-separated):
-                    <input type="text" name="actuators" required placeholder="e.g., DC motor, servo">
-                </label>
-                
-                <label>
-                    Cost (USD):
-                    <input type="number" name="cost_usd" min="0" step="0.01">
-                </label>
-                
-                <h3>Outcome</h3>
-                <label>
-                    Success:
-                    <select name="success" required>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </label>
-                
-                <label>
-                    Duration (seconds):
-                    <input type="number" name="duration_seconds" required min="0" step="0.1">
-                </label>
-                
-                <label>
-                    Reward:
-                    <input type="number" name="reward" required step="0.01">
-                </label>
-                
-                <label>
-                    Failure Reason (if unsuccessful):
-                    <textarea name="failure_reason" rows="3"></textarea>
-                </label>
-                
-                <h3>Additional Data</h3>
-                <label>
-                    Notes:
-                    <textarea name="notes" rows="5"></textarea>
-                </label>
-                
-                <label>
-                    Upload JSON file (optional):
-                    <input type="file" name="json_file" accept=".json">
-                </label>
-                
-                <button type="submit">Submit Experiment</button>
-            </form>
+            </div>
             
-            <div id="validation-result"></div>
-        </section>
+            <!-- Hardware -->
+            <div class="form-section">
+                <h3>🔧 Hardware</h3>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Platform Type</span>
+                        <input type="text" name="platform" required placeholder="e.g., 2-wheel differential">
+                    </label>
+                    <label>
+                        <span class="required">MCU</span>
+                        <input type="text" name="mcu" required placeholder="e.g., ESP32-WROOM-32">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Motors</span>
+                        <input type="text" name="motors" required placeholder="e.g., N20 DC 6V 100RPM">
+                    </label>
+                    <label>
+                        <span class="required">Power Source</span>
+                        <input type="text" name="power_source" required placeholder="e.g., 2S LiPo 7.4V">
+                    </label>
+                </div>
+                <label>
+                    <span class="required">Sensors (comma-separated)</span>
+                    <input type="text" name="sensors" required placeholder="MPU6050, HC-SR04, encoder">
+                </label>
+                <label>
+                    <span class="required">Actuators (comma-separated)</span>
+                    <input type="text" name="actuators" required placeholder="DC motor x2, servo">
+                </label>
+                <label>
+                    <span>Cost (USD)</span>
+                    <input type="number" name="cost_usd" min="0" step="0.01" placeholder="Approximate total">
+                </label>
+            </div>
+            
+            <!-- Environment -->
+            <div class="form-section">
+                <h3>🌍 Environment</h3>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Surface</span>
+                        <select name="surface" required>
+                            <option value="">Select...</option>
+                            <option value="tile">Tile</option>
+                            <option value="carpet">Carpet</option>
+                            <option value="wood">Wood</option>
+                            <option value="concrete">Concrete</option>
+                            <option value="dirt">Dirt</option>
+                            <option value="grass">Grass</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span class="required">Lighting</span>
+                        <select name="lighting" required>
+                            <option value="">Select...</option>
+                            <option value="indoor_artificial">Indoor (Artificial)</option>
+                            <option value="indoor_natural">Indoor (Natural)</option>
+                            <option value="outdoor_day">Outdoor (Day)</option>
+                            <option value="outdoor_night">Outdoor (Night)</option>
+                            <option value="mixed">Mixed</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span class="required">Load</span>
+                        <select name="load" required>
+                            <option value="">Select...</option>
+                            <option value="none">None</option>
+                            <option value="light">Light</option>
+                            <option value="medium">Medium</option>
+                            <option value="heavy">Heavy</option>
+                        </select>
+                    </label>
+                </div>
+                <label>
+                    <span>Environment Notes</span>
+                    <input type="text" name="environment_notes" placeholder="Any other relevant conditions">
+                </label>
+            </div>
+            
+            <!-- Outcome -->
+            <div class="form-section">
+                <h3>📊 Outcome</h3>
+                <div class="form-row">
+                    <label>
+                        <span class="required">Result</span>
+                        <select name="success" required>
+                            <option value="false">❌ Failed</option>
+                            <option value="true">✓ Succeeded</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span class="required">Duration (seconds)</span>
+                        <input type="number" name="duration_seconds" required min="0" step="0.1" placeholder="0.0">
+                    </label>
+                    <label>
+                        <span class="required">Reward</span>
+                        <input type="number" name="reward" required step="0.01" placeholder="0.00">
+                    </label>
+                </div>
+                
+                <div id="failure-fields">
+                    <label>
+                        <span class="required">Failure Mode</span>
+                        <select name="failure_mode" required>
+                            <option value="">Select failure mode...</option>
+                            <option value="control_instability">Control Instability</option>
+                            <option value="mechanical_slip">Mechanical Slip</option>
+                            <option value="perception_error">Perception Error</option>
+                            <option value="actuator_saturation">Actuator Saturation</option>
+                            <option value="power_dropout">Power Dropout</option>
+                            <option value="sensor_noise">Sensor Noise</option>
+                            <option value="communication_loss">Communication Loss</option>
+                            <option value="environmental_interference">Environmental Interference</option>
+                            <option value="timeout">Timeout</option>
+                            <option value="collision">Collision</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Failure Description</span>
+                        <textarea name="failure_description" placeholder="What exactly went wrong?"></textarea>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Notes -->
+            <div class="form-section">
+                <h3>📝 Notes</h3>
+                <label>
+                    <span>Additional Notes</span>
+                    <textarea name="notes" rows="4" placeholder="Observations, lessons learned..."></textarea>
+                </label>
+            </div>
+            
+            <button type="submit">Submit Experiment</button>
+        </form>
+        
+        <div id="validation-result"></div>
     </main>
     
     <footer>
-        <p>Licensed under MIT (code) and CC BY 4.0 (data)</p>
+        <p>PEARL — <span class="text-neon">MIT</span> (code) · <span class="text-neon">CC BY 4.0</span> (data)</p>
     </footer>
     
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Basic form handling - in production, this would submit to backend
-        document.getElementById('experiment-form').addEventListener('submit', function(e) {
+        const SUPABASE_URL = 'https://djzcyhejjlqpbhnvpven.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqemN5aGVqamxxcGJobnZwdmVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NzY5MzYsImV4cCI6MjA4MTQ1MjkzNn0.Om3eh8ol_t7knM5WppMD5hPpyEH2GVieEi9H28bDuLQ';
+        
+        let supabaseClient = null;
+        
+        window.onload = function() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            }
+            document.querySelector('select[name="success"]').addEventListener('change', toggleFailureFields);
+            toggleFailureFields();
+        };
+        
+        function toggleFailureFields() {
+            const success = document.querySelector('select[name="success"]').value === 'true';
+            const failureFields = document.getElementById('failure-fields');
+            const failureModeSelect = document.querySelector('select[name="failure_mode"]');
+            
+            failureFields.style.display = success ? 'none' : 'block';
+            failureModeSelect.required = !success;
+        }
+        
+        document.getElementById('experiment-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('In production, this would submit to the backend. For now, please open a PR on GitHub with your experiment data.');
+            showMessage('Validating...', 'pending');
+            
+            const form = e.target;
+            const success = form.success.value === 'true';
+            
+            const experimentData = {
+                schema_version: '0.2',
+                experiment_id: form.experiment_id.value.trim(),
+                timestamp: new Date().toISOString(),
+                contributor: form.contributor.value.trim(),
+                task: {
+                    type: form.task_type.value,
+                    description: form.task_description.value.trim(),
+                    success_criteria: form.success_criteria.value.trim() || undefined
+                },
+                hardware: {
+                    platform: form.platform.value.trim(),
+                    mcu: form.mcu.value.trim(),
+                    motors: form.motors.value.trim(),
+                    power_source: form.power_source.value.trim(),
+                    sensors: form.sensors.value.split(',').map(s => s.trim()).filter(s => s),
+                    actuators: form.actuators.value.split(',').map(s => s.trim()).filter(s => s)
+                },
+                environment: {
+                    surface: form.surface.value,
+                    lighting: form.lighting.value,
+                    load: form.load.value,
+                    notes: form.environment_notes.value.trim() || undefined
+                },
+                outcome: {
+                    success: success,
+                    duration_seconds: parseFloat(form.duration_seconds.value)
+                },
+                reward: parseFloat(form.reward.value),
+                notes: form.notes.value.trim() || undefined
+            };
+            
+            if (form.parent_experiment.value.trim()) {
+                experimentData.parent_experiment = form.parent_experiment.value.trim();
+            }
+            if (form.cost_usd.value) {
+                experimentData.hardware.cost_usd = parseFloat(form.cost_usd.value);
+            }
+            if (!success) {
+                experimentData.outcome.failure_mode = form.failure_mode.value || null;
+                if (form.failure_description.value.trim()) {
+                    experimentData.outcome.failure_description = form.failure_description.value.trim();
+                }
+            }
+            
+            const errors = validateExperiment(experimentData);
+            if (errors.length > 0) {
+                showMessage('Validation failed:\n• ' + errors.join('\n• '), 'error');
+                return;
+            }
+            
+            if (!supabaseClient) {
+                showMessage('Database not connected.\nData validated but not saved.', 'error');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('experiments')
+                    .insert([experimentData])
+                    .select();
+                
+                if (error) {
+                    if (error.message.includes('rate limit')) {
+                        showMessage('Rate limit: Max 10/hour', 'error');
+                    } else if (error.message.includes('unique') || error.code === '23505') {
+                        showMessage('ID already exists', 'error');
+                    } else {
+                        showMessage('Error: ' + error.message, 'error');
+                    }
+                    return;
+                }
+                
+                showMessage('✓ Submitted successfully\nID: ' + experimentData.experiment_id + '\n\nThis record is now permanent.', 'success');
+                form.reset();
+                toggleFailureFields();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
         });
+        
+        function validateExperiment(exp) {
+            const errors = [];
+            if (!exp.experiment_id) errors.push('Experiment ID required');
+            if (!/^[0-9]{4}_[a-z0-9_]+$/.test(exp.experiment_id)) errors.push('ID format: 0001_name');
+            if (!exp.contributor) errors.push('Contributor required');
+            if (!exp.task?.type) errors.push('Task type required');
+            if (!exp.task?.description || exp.task.description.length < 10) errors.push('Task description min 10 chars');
+            if (!exp.hardware?.platform) errors.push('Platform required');
+            if (!exp.hardware?.mcu) errors.push('MCU required');
+            if (!exp.hardware?.motors) errors.push('Motors required');
+            if (!exp.hardware?.power_source) errors.push('Power source required');
+            if (!exp.hardware?.sensors?.length) errors.push('At least one sensor');
+            if (!exp.hardware?.actuators?.length) errors.push('At least one actuator');
+            if (!exp.environment?.surface) errors.push('Surface required');
+            if (!exp.environment?.lighting) errors.push('Lighting required');
+            if (!exp.environment?.load) errors.push('Load required');
+            if (typeof exp.outcome?.success !== 'boolean') errors.push('Success/failure required');
+            if (typeof exp.outcome?.duration_seconds !== 'number') errors.push('Duration required');
+            if (typeof exp.reward !== 'number') errors.push('Reward required');
+            if (!exp.outcome.success && !exp.outcome.failure_mode) errors.push('Failure mode required');
+            return errors;
+        }
+        
+        function showMessage(message, type) {
+            const div = document.getElementById('validation-result');
+            div.className = 'validation-result ' + type;
+            div.innerHTML = message.replace(/\n/g, '<br>');
+            div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     </script>
 </body>
 </html>
-

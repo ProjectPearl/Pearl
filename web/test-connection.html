@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Supabase Connection</title>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="result"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        const resultDiv = document.getElementById('result');
+        
+        // Test 1: Check config
+        resultDiv.innerHTML += '<h2>Test 1: Config Check</h2>';
+        resultDiv.innerHTML += '<p>URL: ' + (SUPABASE_CONFIG.url || 'MISSING') + '</p>';
+        resultDiv.innerHTML += '<p>Key: ' + (SUPABASE_CONFIG.anonKey ? SUPABASE_CONFIG.anonKey.substring(0, 20) + '...' : 'MISSING') + '</p>';
+        
+        // Test 2: Initialize client
+        let supabaseClient = null;
+        if (SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
+            supabaseClient = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            resultDiv.innerHTML += '<h2>Test 2: Client Created</h2><p>✅ Supabase client initialized</p>';
+        } else {
+            resultDiv.innerHTML += '<h2>Test 2: Client Creation</h2><p>❌ Config missing</p>';
+        }
+        
+        // Test 3: Try to read from table
+        if (supabaseClient) {
+            resultDiv.innerHTML += '<h2>Test 3: Reading from table...</h2>';
+            supabaseClient
+                .from('experiments')
+                .select('count')
+                .then(({ data, error }) => {
+                    if (error) {
+                        resultDiv.innerHTML += '<p style="color: red;">❌ Error: ' + error.message + '</p>';
+                        resultDiv.innerHTML += '<p>Error code: ' + (error.code || 'N/A') + '</p>';
+                    } else {
+                        resultDiv.innerHTML += '<p style="color: green;">✅ Can read from table!</p>';
+                    }
+                });
+            
+            // Test 4: Try to insert
+            resultDiv.innerHTML += '<h2>Test 4: Testing insert...</h2>';
+            const testData = {
+                experiment_id: 'test_' + Date.now(),
+                timestamp: new Date().toISOString(),
+                contributor: 'test_user',
+                hardware: {
+                    platform: 'ESP32',
+                    sensors: ['test'],
+                    actuators: ['test']
+                },
+                sensors: {},
+                actions: [],
+                outcome: {
+                    success: true,
+                    duration_seconds: 1
+                },
+                reward: 1.0
+            };
+            
+            supabaseClient
+                .from('experiments')
+                .insert([testData])
+                .select()
+                .then(({ data, error }) => {
+                    if (error) {
+                        resultDiv.innerHTML += '<p style="color: red;">❌ Insert failed: ' + error.message + '</p>';
+                        resultDiv.innerHTML += '<p>Error code: ' + (error.code || 'N/A') + '</p>';
+                        resultDiv.innerHTML += '<p>Error details: ' + JSON.stringify(error, null, 2) + '</p>';
+                    } else {
+                        resultDiv.innerHTML += '<p style="color: green;">✅ Insert successful! ID: ' + data[0].id + '</p>';
+                        resultDiv.innerHTML += '<p>Check Supabase Table Editor to see the new row!</p>';
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
+

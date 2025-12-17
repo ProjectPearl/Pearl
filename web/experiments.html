@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#030308">
+    <title>Experiments - PEARL</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-toggle {
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+        
+        .filter-btn.active {
+            background: var(--error);
+            color: white;
+            box-shadow: var(--glow-error);
+        }
+        
+        .filter-btn.active.success-filter {
+            background: var(--success);
+            box-shadow: var(--glow-success);
+        }
+        
+        .filter-btn.active.all-filter {
+            background: var(--neon-blue);
+            box-shadow: var(--glow-blue);
+        }
+        
+        /* Stats */
+        .stats-inline {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+        
+        .stats-inline span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .stats-inline .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        
+        /* Failure Mode Tags */
+        .failure-modes-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+        }
+        
+        .failure-mode-tag {
+            padding: 0.3rem 0.75rem;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--error);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .failure-mode-tag:hover {
+            background: rgba(255, 51, 102, 0.2);
+            box-shadow: var(--glow-error);
+        }
+        
+        .failure-mode-tag .count {
+            background: rgba(255,255,255,0.15);
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+            margin-left: 0.3rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Experiment Cards */
+        .experiment-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .experiment-card:hover {
+            border-color: var(--border-neon);
+            box-shadow: var(--glow-blue);
+        }
+        
+        .experiment-card.failure {
+            border-left: 3px solid var(--error);
+        }
+        
+        .experiment-card.success {
+            border-left: 3px solid var(--success);
+        }
+        
+        .experiment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .experiment-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neon-blue);
+        }
+        
+        .experiment-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .badge-container {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Details Grid */
+        .experiment-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .detail-item {
+            padding: 0.5rem;
+            background: var(--bg-deep);
+            border-radius: 4px;
+        }
+        
+        .detail-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+        
+        .detail-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        
+        /* Info Blocks */
+        .info-block {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-deep);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .info-block.failure-info {
+            border-left: 2px solid var(--error);
+        }
+        
+        .info-block strong {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-state a {
+            color: var(--neon-blue);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PEARL</h1>
+        <p>Experiments Database</p>
+    </header>
+    
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="submit.html">Submit</a>
+        <a href="experiments.html" class="active">Experiments</a>
+        <a href="failures.html">Failures</a>
+        <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
+    </nav>
+    
+    <main>
+        <section>
+            <h2>Experiment Log</h2>
+            
+            <div class="filter-bar">
+                <div class="filter-toggle">
+                    <button class="filter-btn active" data-filter="failures" onclick="setFilter('failures')">
+                        ✗ Failures
+                    </button>
+                    <button class="filter-btn success-filter" data-filter="successes" onclick="setFilter('successes')">
+                        ✓ Successes
+                    </button>
+                    <button class="filter-btn all-filter" data-filter="all" onclick="setFilter('all')">
+                        All
+                    </button>
+                </div>
+                
+                <div class="stats-inline">
+                    <span>Total: <span class="value" id="stat-total">—</span></span>
+                    <span>Failures: <span class="value" style="color: var(--error);" id="stat-failures">—</span></span>
+                </div>
+            </div>
+            
+            <div id="failure-modes-container"></div>
+            
+            <div id="experiments-container">
+                <div class="loading">Loading experiments...</div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>PEARL — <span class="text-neon">MIT</span> (code) · <span class="text-neon">CC BY 4.0</span> (data)</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://djzcyhejjlqpbhnvpven.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqemN5aGVqamxxcGJobnZwdmVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NzY5MzYsImV4cCI6MjA4MTQ1MjkzNn0.Om3eh8ol_t7knM5WppMD5hPpyEH2GVieEi9H28bDuLQ';
+        
+        let supabaseClient = null;
+        let allExperiments = [];
+        let currentFilter = 'failures';
+        
+        window.onload = function() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                loadExperiments();
+            } else {
+                document.getElementById('experiments-container').innerHTML = 
+                    '<div class="message error">Database not connected. Refresh the page.</div>';
+            }
+        };
+        
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === filter) btn.classList.add('active');
+            });
+            renderExperiments();
+        }
+        
+        async function loadExperiments() {
+            const container = document.getElementById('experiments-container');
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('experiments')
+                    .select('*')
+                    .order('timestamp', { ascending: false })
+                    .limit(50);
+                
+                if (error) {
+                    container.innerHTML = `<div class="message error">Error: ${error.message}</div>`;
+                    return;
+                }
+                
+                allExperiments = data || [];
+                updateStats();
+                renderFailureModes();
+                renderExperiments();
+            } catch (error) {
+                container.innerHTML = `<div class="message error">Error: ${error.message}</div>`;
+            }
+        }
+        
+        function updateStats() {
+            const total = allExperiments.length;
+            const failures = allExperiments.filter(e => !e.outcome?.success).length;
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-failures').textContent = failures;
+        }
+        
+        function renderFailureModes() {
+            const failureModes = {};
+            allExperiments.forEach(exp => {
+                if (!exp.outcome?.success && exp.outcome?.failure_mode) {
+                    const mode = exp.outcome.failure_mode;
+                    failureModes[mode] = (failureModes[mode] || 0) + 1;
+                }
+            });
+            
+            if (Object.keys(failureModes).length === 0) {
+                document.getElementById('failure-modes-container').innerHTML = '';
+                return;
+            }
+            
+            const sorted = Object.entries(failureModes).sort((a, b) => b[1] - a[1]);
+            const tags = sorted.map(([mode, count]) => 
+                `<button class="failure-mode-tag" onclick="filterByMode('${mode}')">
+                    ${formatMode(mode)} <span class="count">${count}</span>
+                </button>`
+            ).join('');
+            
+            document.getElementById('failure-modes-container').innerHTML = `
+                <div class="failure-modes-bar">${tags}</div>
+            `;
+        }
+        
+        function formatMode(mode) {
+            return mode.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        function filterByMode(mode) {
+            currentFilter = 'mode:' + mode;
+            renderExperiments();
+        }
+        
+        function renderExperiments() {
+            const container = document.getElementById('experiments-container');
+            
+            if (allExperiments.length === 0) {
+                container.innerHTML = '<div class="empty-state">No experiments yet. <a href="submit.html">Submit the first one!</a></div>';
+                return;
+            }
+            
+            let filtered = [...allExperiments];
+            
+            if (currentFilter === 'failures') {
+                filtered = filtered.filter(e => !e.outcome?.success);
+            } else if (currentFilter === 'successes') {
+                filtered = filtered.filter(e => e.outcome?.success);
+            } else if (currentFilter.startsWith('mode:')) {
+                const mode = currentFilter.replace('mode:', '');
+                filtered = filtered.filter(e => e.outcome?.failure_mode === mode);
+            } else {
+                filtered.sort((a, b) => {
+                    if (a.outcome?.success === b.outcome?.success) {
+                        return new Date(b.timestamp) - new Date(a.timestamp);
+                    }
+                    return a.outcome?.success ? 1 : -1;
+                });
+            }
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state">No matching experiments.</div>';
+                return;
+            }
+            
+            container.innerHTML = filtered.map(exp => renderExperiment(exp)).join('');
+        }
+        
+        function renderExperiment(exp) {
+            const success = exp.outcome?.success ?? false;
+            const reward = exp.reward ?? 0;
+            const platform = exp.hardware?.platform || '—';
+            const mcu = exp.hardware?.mcu || '';
+            const sensors = exp.hardware?.sensors?.join(', ') || '—';
+            const duration = exp.outcome?.duration_seconds ?? 0;
+            const contributor = exp.contributor || 'anon';
+            const timestamp = new Date(exp.timestamp).toLocaleDateString();
+            const taskType = exp.task?.type || 'other';
+            const failureMode = exp.outcome?.failure_mode;
+            const environment = exp.environment || {};
+            
+            return `
+                <div class="experiment-card ${success ? 'success' : 'failure'}">
+                    <div class="experiment-header">
+                        <div>
+                            <div class="experiment-id">${escapeHtml(exp.experiment_id)}</div>
+                            <div class="experiment-meta">@${escapeHtml(contributor)} · ${timestamp}</div>
+                        </div>
+                        <div class="badge-container">
+                            <span class="badge info">${taskType}</span>
+                            <span class="badge ${success ? 'success' : 'failure'}">
+                                ${success ? '✓ OK' : '✗ FAIL'}
+                            </span>
+                            ${failureMode ? `<span class="badge warning">${formatMode(failureMode)}</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="experiment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Platform</div>
+                            <div class="detail-value">${escapeHtml(platform)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Reward</div>
+                            <div class="detail-value" style="color: ${reward >= 0 ? 'var(--success)' : 'var(--error)'}">${reward.toFixed(2)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value">${duration.toFixed(1)}s</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Surface</div>
+                            <div class="detail-value">${environment.surface || '—'}</div>
+                        </div>
+                    </div>
+                    
+                    ${exp.outcome?.failure_description ? `
+                    <div class="info-block failure-info">
+                        <strong>Failure</strong>
+                        ${escapeHtml(exp.outcome.failure_description)}
+                    </div>
+                    ` : ''}
+                    
+                    ${exp.notes ? `
+                    <div class="info-block">
+                        <strong>Notes</strong>
+                        ${escapeHtml(exp.notes)}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

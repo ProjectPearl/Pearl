@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Supabase</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Supabase Debug Page</h1>
+    <div id="output"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            output.appendChild(div);
+            console.log(message);
+        }
+        
+        log('=== Starting Debug ===', 'info');
+        
+        // Test 1: Check if config.js loaded
+        log('Test 1: Checking config.js...', 'info');
+        if (typeof SUPABASE_CONFIG !== 'undefined') {
+            log('✅ SUPABASE_CONFIG exists', 'success');
+            log('URL: ' + (SUPABASE_CONFIG.url || 'MISSING'), SUPABASE_CONFIG.url ? 'success' : 'error');
+            log('Key: ' + (SUPABASE_CONFIG.anonKey ? SUPABASE_CONFIG.anonKey.substring(0, 30) + '...' : 'MISSING'), SUPABASE_CONFIG.anonKey ? 'success' : 'error');
+        } else {
+            log('❌ SUPABASE_CONFIG not found!', 'error');
+        }
+        
+        // Test 2: Check if Supabase library loaded
+        log('', 'info');
+        log('Test 2: Checking Supabase library...', 'info');
+        
+        let attempts = 0;
+        const checkSupabase = setInterval(() => {
+            attempts++;
+            if (typeof supabase !== 'undefined' && supabase) {
+                log('✅ Supabase library loaded!', 'success');
+                log('supabase type: ' + typeof supabase, 'success');
+                clearInterval(checkSupabase);
+                
+                // Test 3: Try to create client
+                log('', 'info');
+                log('Test 3: Creating Supabase client...', 'info');
+                try {
+                    const client = supabase.createClient(
+                        SUPABASE_CONFIG.url,
+                        SUPABASE_CONFIG.anonKey
+                    );
+                    log('✅ Client created successfully!', 'success');
+                    
+                    // Test 4: Try to query
+                    log('', 'info');
+                    log('Test 4: Testing database query...', 'info');
+                    client.from('experiments').select('count').then(({ data, error }) => {
+                        if (error) {
+                            log('❌ Query error: ' + error.message, 'error');
+                            log('Error code: ' + (error.code || 'N/A'), 'error');
+                        } else {
+                            log('✅ Query successful!', 'success');
+                            log('Database connection working!', 'success');
+                        }
+                    });
+                } catch (error) {
+                    log('❌ Error creating client: ' + error.message, 'error');
+                }
+            } else if (attempts > 50) {
+                log('❌ Supabase library failed to load after 5 seconds', 'error');
+                log('Check network connection or CDN availability', 'error');
+                clearInterval(checkSupabase);
+            } else {
+                log('Waiting for Supabase library... (' + attempts + '/50)', 'info');
+            }
+        }, 100);
+    </script>
+</body>
+</html>
+

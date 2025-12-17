@@ -84,7 +84,7 @@ Submissions missing required fields will be rejected.
 
 ## Questions?
 
-- Open a [Discussion](https://github.com/ananyadevdesai/embodied-learning/discussions)
-- Check existing [Issues](https://github.com/ananyadevdesai/embodied-learning/issues)
+- Open a [Discussion](https://github.com/ProjectPearl/Pearl/discussions)
+- Check existing [Issues](https://github.com/ProjectPearl/Pearl/issues)
 - Review `GOVERNANCE.md` for decision-making process
 

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Submit</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 4px; }
+        #result { margin-top: 20px; padding: 15px; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #cce5ff; color: #004085; }
+        pre { background: #f5f5f5; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test Supabase Submit</h1>
+    
+    <div id="status">Loading...</div>
+    
+    <button onclick="testSubmit()">Test Submit</button>
+    
+    <div id="result"></div>
+
+    <!-- Load Supabase first -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Hardcode the config directly (no external file)
+        const SUPABASE_URL = 'https://djzcyhejjlqpbhnvpven.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqemN5aGVqamxxcGJobnZwdmVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NzY5MzYsImV4cCI6MjA4MTQ1MjkzNn0.Om3eh8ol_t7knM5WppMD5hPpyEH2GVieEi9H28bDuLQ';
+        
+        let client = null;
+        
+        // Wait for page to fully load
+        window.onload = function() {
+            const statusDiv = document.getElementById('status');
+            
+            // Check if supabase library loaded
+            if (typeof supabase === 'undefined') {
+                statusDiv.innerHTML = '❌ Supabase library not loaded (CDN blocked?)';
+                return;
+            }
+            
+            // Try to create client
+            try {
+                client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                statusDiv.innerHTML = '✅ Supabase client created! Ready to test.';
+            } catch (e) {
+                statusDiv.innerHTML = '❌ Error creating client: ' + e.message;
+            }
+        };
+        
+        async function testSubmit() {
+            const resultDiv = document.getElementById('result');
+            
+            if (!client) {
+                resultDiv.innerHTML = '<div class="error">Client not ready</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<div class="info">Submitting test data...</div>';
+            
+            // Test data
+            const testData = {
+                experiment_id: 'test_' + Date.now(),
+                timestamp: new Date().toISOString(),
+                hardware: { platform: 'ESP32', sensors: ['test'], actuators: ['test'] },
+                sensors: [{ type: 'test', reading: 1 }],
+                actions: [{ type: 'test', value: 1, timestamp: new Date().toISOString() }],
+                outcome: { success: true, duration_seconds: 1 },
+                reward: 1,
+                notes: 'Test submission from test-submit.html'
+            };
+            
+            try {
+                const { data, error } = await client
+                    .from('experiments')
+                    .insert([{
+                        experiment_id: testData.experiment_id,
+                        timestamp: testData.timestamp,
+                        contributor: 'test_user',
+                        hardware: testData.hardware,
+                        sensors: testData.sensors,
+                        actions: testData.actions,
+                        outcome: testData.outcome,
+                        reward: testData.reward,
+                        notes: testData.notes
+                    }])
+                    .select();
+                
+                if (error) {
+                    resultDiv.innerHTML = '<div class="error"><strong>Error:</strong> ' + error.message + '</div><pre>' + JSON.stringify(error, null, 2) + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<div class="success"><strong>✅ SUCCESS!</strong> Data saved to Supabase!</div><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                }
+            } catch (e) {
+                resultDiv.innerHTML = '<div class="error"><strong>Exception:</strong> ' + e.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,58 +1,209 @@
-# Embodied Learning
+# PEARL
+### Physical Embodied Autonomous Robotics Learning
 
-## What is this?
+An open-source infrastructure for collecting and sharing real-world robotics learning data.
 
-An open-source project to collect and share real-world embodied learning data from low-cost physical systems.
+**This is not a vibe project.** It's designed for research-grade data integrity.
 
-## Why does it exist?
+---
 
-Most ML research ignores physical interaction. This project exists to study learning through real-world sensing, action, failure, and feedback.
+## Project Status
 
-## What counts as a contribution?
+| Metric | Value |
+|--------|-------|
+| Schema Version | 0.2 |
+| Experiments | Growing |
+| Contributors | Open |
+| Task Types | 6 canonical |
+| Data License | CC BY 4.0 |
 
-- **Experiments**: Real-world trials with hardware, sensors, and actuators
-- **Hardware builds**: Open designs for low-cost embodied systems
-- **Firmware**: Code that runs on embedded devices (ESP32, Arduino, etc.)
-- **Analysis**: Insights from collected data, metrics, and learning approaches
-- **Documentation**: Guides, schemas, and examples that help others contribute
+---
 
-## What this is NOT
+## Why PEARL Exists
 
-- ❌ Not a startup
-- ❌ Not AGI
-- ❌ Not simulation-only
-- ❌ Not closed datasets
+Most ML research ignores physical interaction. Simulations don't capture:
+- Mechanical slip
+- Sensor noise
+- Power brownouts
+- Environmental interference
 
-## How to get started in 30 minutes
+PEARL collects **real failure data** from physical systems. Failures are features, not bugs.
 
-1. **Read the schema** (`schema/experiment_schema.json`) - understand what data we collect
-2. **Check out an example** (`experiments/0001_balance_bot/`) - see how experiments are documented
-3. **Pick your path**:
-   - **Builder?** Run an experiment and submit data via `web/submit.html`
-   - **Developer?** Improve the web app, firmware, or schema validation
-   - **Thinker?** Analyze existing data in `experiments/` and propose insights
-4. **Submit your first contribution** - follow `CONTRIBUTING.md`
+---
 
-If you can't contribute in 30 minutes, we've failed. [Open an issue](https://github.com/ananyadevdesai/embodied-learning/issues) and tell us why.
+## Core Design Principles
 
-## Core Principles
+### 🔒 Immutable Records
+Once submitted, experiments **cannot be edited**. This prevents hindsight bias and ensures data trustworthiness.
 
-- **Open data schemas**: Everything is documented and extensible
-- **Transparent experiments**: Success and failure are both valuable
-- **No proprietary lock-in**: Use standard formats, open hardware
-- **Real-world only**: No simulation-only experiments
-- **Failure logs are as valuable as success**: Document what didn't work
+### ❌ Failures First
+Default view shows failures before successes. Hardware learning = learning from failure.
+
+### 📋 Strict Schema (Hard Fail)
+- Missing reward → **rejected**
+- Missing outcome → **rejected**
+- Missing hardware + task → **rejected**
+
+No "optional everything." Quality > quantity.
+
+### 🌍 Environment Metadata Required
+Every experiment must include:
+- Surface (tile, carpet, dirt, etc.)
+- Lighting (indoor/outdoor)
+- Load (none/light/heavy)
+
+Physical learning without environment context is meaningless.
+
+### 🔧 Hardware Fingerprints
+Structured hardware descriptions (MCU, motors, power source) are hashed into a `hardware_id`. This enables cross-experiment comparison.
+
+### 📊 Reproducibility Scoring
+Experiments are auto-scored based on metadata completeness. Good logging is encouraged without social policing.
+
+### 🚫 Anti-Vibe Guardrails
+- **No ML models yet** — Infrastructure first
+- **No anonymous mass uploads** — Rate limited (10/hour per contributor)
+- **No likes or gamification** — Honesty over performance theater
+
+---
+
+## Schema v0.2
+
+Breaking changes require major version bump.
+
+**Required fields:**
+- `schema_version` — Declares which schema version
+- `experiment_id` — Format: `NNNN_descriptive_name`
+- `timestamp` — ISO 8601
+- `contributor` — GitHub username (no anonymous)
+- `task` — Type + description (min 10 chars)
+- `hardware` — Platform, MCU, motors, power, sensors, actuators
+- `environment` — Surface, lighting, load
+- `outcome` — Success/failure + duration + failure_mode (if failed)
+- `reward` — Numeric reward signal
+
+See [`schema/experiment_schema.json`](schema/experiment_schema.json) for full spec.
+
+---
+
+## Canonical Tasks
+
+| Task | Description |
+|------|-------------|
+| `balance` | Maintain upright position |
+| `navigation` | Move from A to B |
+| `grasping` | Pick up an object |
+| `locomotion` | Move/traverse terrain |
+| `tracking` | Follow a moving target |
+| `avoidance` | Navigate while avoiding obstacles |
+
+See [`docs/CANONICAL_TASKS.md`](docs/CANONICAL_TASKS.md) for expected sensors, rewards, and failure modes.
+
+---
+
+## Failure Mode Ontology
+
+Standardized failure categories enable pattern recognition across experiments:
+
+| Code | Description |
+|------|-------------|
+| `control_instability` | Oscillation, runaway behavior |
+| `mechanical_slip` | Traction loss |
+| `perception_error` | Bad sensor data |
+| `actuator_saturation` | Motor at max, can't provide more |
+| `power_dropout` | Brownout, reset |
+| `sensor_noise` | High noise floor |
+| `communication_loss` | Wireless/serial failure |
+| `environmental_interference` | External disruption |
+| `timeout` | Didn't finish in time |
+| `collision` | Unintended contact |
+
+See [`docs/FAILURE_MODES.md`](docs/FAILURE_MODES.md) for details.
+
+---
+
+## Quick Start
+
+### View Data
+```
+cd web
+python3 -m http.server 8080
+# Open http://localhost:8080
+```
+
+### Submit an Experiment
+1. Go to http://localhost:8080/submit.html
+2. Fill all required fields (marked with *)
+3. Submit — it's permanent
+
+### Database Setup (Supabase)
+1. Create free account at [supabase.com](https://supabase.com)
+2. Run SQL from [`CREATE_TABLE.sql`](CREATE_TABLE.sql)
+3. Copy Project URL + anon key to `web/config.js`
+
+---
+
+## Project Structure
+
+```
+PEARL/
+├── web/                    # Frontend
+│   ├── index.html         # Home
+│   ├── submit.html        # Submission form
+│   ├── experiments.html   # View experiments
+│   └── failures.html      # Negative results index
+├── schema/
+│   └── experiment_schema.json  # JSON Schema v0.2
+├── docs/
+│   ├── CANONICAL_TASKS.md     # Task definitions
+│   └── FAILURE_MODES.md       # Failure ontology
+├── CREATE_TABLE.sql       # Supabase schema
+└── experiments/           # Example experiments
+```
+
+---
+
+## What NOT To Do
+
+❌ Don't add ML models yet — infrastructure first  
+❌ Don't optimize UI before data quality  
+❌ Don't add auth complexity prematurely  
+❌ Don't chase contributor count — quality > quantity  
+
+---
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
+
+Good first issues: [`GOOD_FIRST_ISSUES.md`](GOOD_FIRST_ISSUES.md)
+
+---
+
+## The Litmus Test
+
+For every feature, ask:
+
+> **Does this make physical learning more cumulative?**
+
+If not → don't build it.
+
+---
 
 ## License
 
-- **Code**: MIT License (see `LICENSE`)
-- **Data**: CC BY 4.0 (see `DATA_LICENSE.md`)
-- **Documentation**: CC BY-SA 4.0
+- **Code:** MIT
+- **Data:** CC BY 4.0
+- **Docs:** CC BY-SA 4.0
 
-## Quick Links
+---
 
-- [Contributing Guide](CONTRIBUTING.md)
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Governance](GOVERNANCE.md)
-- [Project Vision](docs/vision.md)
-- [Experiment Schema](schema/experiment_schema.json)
+## What This Becomes
+
+If we stay disciplined:
+
+- A real-world embodied learning dataset
+- A community around physical experimentation
+- A reference point that researchers cite
+
+That's rare. That's serious.

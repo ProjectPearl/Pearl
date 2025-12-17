@@ -20,7 +20,7 @@ See: https://creativecommons.org/licenses/by/4.0/legalcode
 When using data from this project, please attribute as:
 
 ```
-Data from Embodied Learning Project (https://github.com/ananyadevdesai/embodied-learning)
+Data from Embodied Learning Project (https://github.com/ProjectPearl/Pearl)
 Licensed under CC BY 4.0
 ```
 
