@@ -3,77 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0f0f1a">
     <title>Experiments - PEARL</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .page-header {
-            text-align: center;
-            padding: 5rem 2rem 2rem;
-        }
-        
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .page-header p {
-            color: var(--gray-500);
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
-        
-        .filters {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            justify-content: center;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1.25rem;
-            background: var(--gray-900);
-            border: none;
-            border-radius: 100px;
-            color: var(--gray-500);
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        
-        .filter-btn:hover { color: var(--white); }
-        .filter-btn.active { background: var(--white); color: var(--black); }
-        
-        .card {
-            background: var(--gray-900);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .card.fail { border-left: 3px solid var(--error); }
-        .card.ok { border-left: 3px solid var(--success); }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        .card-id { font-weight: 600; }
-        .card-meta { font-size: 0.8125rem; color: var(--gray-500); }
-        
-        .empty {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray-500);
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -85,7 +17,7 @@
     
     <div class="page-header">
         <h1>Experiments</h1>
-        <p>Failures shown first</p>
+        <p>Browse submitted experiments · Failures shown first</p>
     </div>
     
     <div class="container">
@@ -96,12 +28,12 @@
         </div>
         
         <div id="list">
-            <div class="loading">Loading...</div>
+            <div class="loading">Loading experiments...</div>
         </div>
     </div>
     
     <footer>
-        <p>MIT (code) · CC BY 4.0 (data)</p>
+        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a></p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -118,7 +50,7 @@
                 all = data || [];
                 render();
             } else {
-                document.getElementById('list').innerHTML = '<div class="empty">Not connected</div>';
+                document.getElementById('list').innerHTML = '<div class="empty">Database not connected</div>';
             }
         };
         
@@ -135,7 +67,7 @@
             else if (current === 'successes') items = items.filter(e => e.outcome?.success);
             
             if (!items.length) {
-                document.getElementById('list').innerHTML = '<div class="empty">No experiments</div>';
+                document.getElementById('list').innerHTML = '<div class="empty">No experiments found</div>';
                 return;
             }
             
@@ -143,11 +75,13 @@
                 <div class="card ${e.outcome?.success ? 'ok' : 'fail'}">
                     <div class="card-header">
                         <span class="card-id">${e.experiment_id}</span>
-                        <span class="badge ${e.outcome?.success ? 'success' : 'failure'}">${e.outcome?.success ? 'OK' : 'FAIL'}</span>
+                        <span class="badge ${e.outcome?.success ? 'success' : 'failure'}">${e.outcome?.success ? 'Success' : 'Failed'}</span>
                     </div>
                     <div class="card-meta">
-                        ${e.task?.type || '—'} · ${e.hardware?.platform || '—'} · ${(e.outcome?.duration_seconds || 0).toFixed(1)}s
+                        <span class="badge info">${e.task?.type || '—'}</span>
+                        ${e.hardware?.platform || '—'} · ${(e.outcome?.duration_seconds || 0).toFixed(1)}s · Reward: ${e.reward || 0}
                     </div>
+                    ${e.outcome?.failure_mode ? `<div class="card-meta" style="margin-top:0.75rem;color:var(--red)">⚠ ${e.outcome.failure_mode.replace(/_/g, ' ')}</div>` : ''}
                 </div>
             `).join('');
         }

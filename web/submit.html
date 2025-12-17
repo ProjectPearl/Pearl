@@ -3,41 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0f0f1a">
     <title>Submit - PEARL</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .page-header {
-            text-align: center;
-            padding: 5rem 2rem 2rem;
-        }
-        
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .page-header p {
-            color: var(--gray-500);
-        }
-        
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
-        
-        #failure-fields {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--gray-800);
-        }
-        
-        button[type="submit"] {
-            width: 100%;
-            margin-top: 1.5rem;
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -48,22 +16,22 @@
     </nav>
     
     <div class="page-header">
-        <h1>Submit</h1>
-        <p>Records are permanent</p>
+        <h1>Submit Experiment</h1>
+        <p>Records are permanent and cannot be edited</p>
     </div>
     
     <div class="form-container">
         <form id="experiment-form">
             <div class="form-section">
-                <h3>Info</h3>
+                <h3>Basic Info</h3>
                 <div class="form-row">
                     <label>
-                        <span class="required">ID</span>
-                        <input type="text" name="experiment_id" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_test">
+                        <span class="required">Experiment ID</span>
+                        <input type="text" name="experiment_id" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_balance_test">
                     </label>
                     <label>
                         <span class="required">Contributor</span>
-                        <input type="text" name="contributor" required placeholder="github_user">
+                        <input type="text" name="contributor" required placeholder="github_username">
                     </label>
                 </div>
             </div>
@@ -73,7 +41,7 @@
                 <label>
                     <span class="required">Type</span>
                     <select name="task_type" required>
-                        <option value="">Select...</option>
+                        <option value="">Select task type...</option>
                         <option value="balance">Balance</option>
                         <option value="navigation">Navigation</option>
                         <option value="grasping">Grasping</option>
@@ -85,7 +53,7 @@
                 </label>
                 <label>
                     <span class="required">Description</span>
-                    <textarea name="task_description" required minlength="10" placeholder="What was the robot doing?"></textarea>
+                    <textarea name="task_description" required minlength="10" placeholder="What was the robot trying to do?"></textarea>
                 </label>
             </div>
             
@@ -94,7 +62,7 @@
                 <div class="form-row">
                     <label>
                         <span class="required">Platform</span>
-                        <input type="text" name="platform" required placeholder="2-wheel bot">
+                        <input type="text" name="platform" required placeholder="2-wheel differential">
                     </label>
                     <label>
                         <span class="required">MCU</span>
@@ -104,20 +72,20 @@
                 <div class="form-row">
                     <label>
                         <span class="required">Motors</span>
-                        <input type="text" name="motors" required placeholder="N20 DC">
+                        <input type="text" name="motors" required placeholder="N20 DC 6V">
                     </label>
                     <label>
                         <span class="required">Power</span>
-                        <input type="text" name="power_source" required placeholder="2S LiPo">
+                        <input type="text" name="power_source" required placeholder="2S LiPo 7.4V">
                     </label>
                 </div>
                 <label>
                     <span class="required">Sensors</span>
-                    <input type="text" name="sensors" required placeholder="MPU6050, HC-SR04">
+                    <input type="text" name="sensors" required placeholder="MPU6050, HC-SR04 (comma separated)">
                 </label>
                 <label>
                     <span class="required">Actuators</span>
-                    <input type="text" name="actuators" required placeholder="DC motor x2">
+                    <input type="text" name="actuators" required placeholder="DC motor x2, servo (comma separated)">
                 </label>
             </div>
             
@@ -145,7 +113,7 @@
                     <label>
                         <span class="required">Failure Mode</span>
                         <select name="failure_mode" required>
-                            <option value="">Select...</option>
+                            <option value="">Select failure mode...</option>
                             <option value="control_instability">Control Instability</option>
                             <option value="mechanical_slip">Mechanical Slip</option>
                             <option value="perception_error">Perception Error</option>
@@ -163,18 +131,18 @@
             <div class="form-section">
                 <h3>Notes</h3>
                 <label>
-                    <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+                    <textarea name="notes" rows="3" placeholder="Optional observations or lessons learned"></textarea>
                 </label>
             </div>
             
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn">Submit Experiment →</button>
         </form>
         
         <div id="validation-result"></div>
     </div>
     
     <footer>
-        <p>MIT (code) · CC BY 4.0 (data)</p>
+        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a></p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -235,7 +203,7 @@
             if (error) {
                 showMsg(error.message, 'error');
             } else {
-                showMsg('Submitted', 'success');
+                showMsg('✓ Experiment submitted successfully', 'success');
                 form.reset();
                 toggleFailureFields();
             }

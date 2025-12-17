@@ -3,63 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
-    <title>PEARL</title>
+    <meta name="theme-color" content="#0f0f1a">
+    <title>PEARL - Real-World Robotics Data</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <style>
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .hero h1 {
-            font-size: clamp(5rem, 20vw, 12rem);
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero p {
-            font-size: 1.125rem;
-            color: var(--gray-500);
-            margin-bottom: 3rem;
-            max-width: 400px;
-        }
-        
-        .stats-section {
-            padding: 6rem 2rem;
-            background: var(--gray-900);
-        }
-        
-        .stats-grid {
-            max-width: 800px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            text-align: center;
-        }
-        
-        .stat .value {
-            font-size: 3rem;
-            font-weight: 600;
-        }
-        
-        .stat .label {
-            color: var(--gray-500);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-        
-        @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: 1fr; gap: 3rem; }
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -70,33 +17,76 @@
     </nav>
     
     <div class="hero">
-        <h1>PEARL</h1>
-        <p>Open infrastructure for real-world robotics data. Failures are features.</p>
+        <h1>Real-World <span>Robotics Data</span></h1>
+        <p>Open infrastructure for collecting physical experiment data. Document failures. Share learnings. Build better robots.</p>
         <div class="cta-group">
-            <a href="experiments.html" class="btn">View Experiments</a>
-            <a href="submit.html" class="btn secondary">Submit</a>
+            <a href="submit.html" class="btn">Submit Experiment →</a>
+            <a href="experiments.html" class="btn secondary">Browse Data</a>
         </div>
     </div>
     
     <div class="stats-section">
         <div class="stats-grid">
-            <div class="stat">
-                <div class="value" id="stat-total">—</div>
-                <div class="label">Experiments</div>
+            <div class="stat-card">
+                <div class="value" id="stat-total">0</div>
+                <div class="label">Experiments Logged</div>
             </div>
-            <div class="stat">
-                <div class="value" id="stat-failures">—</div>
-                <div class="label">Failures</div>
+            <div class="stat-card">
+                <div class="value" id="stat-failures">0</div>
+                <div class="label">Failures Documented</div>
             </div>
-            <div class="stat">
+            <div class="stat-card">
+                <div class="value">100%</div>
+                <div class="label">Immutable</div>
+            </div>
+            <div class="stat-card">
                 <div class="value">v0.2</div>
                 <div class="label">Schema</div>
             </div>
         </div>
     </div>
     
+    <div class="features-section">
+        <div class="section-title">
+            <h2>Why PEARL?</h2>
+            <p>Real robots fail in ways simulations never predict. Capture that data.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>Structured Data</h3>
+                <p>Schema-validated experiments with required fields for task, hardware, and outcome.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔒</div>
+                <h3>Immutable Records</h3>
+                <p>Once submitted, experiments cannot be edited. No hindsight bias allowed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">❌</div>
+                <h3>Failures First</h3>
+                <p>Default view shows failures because learning happens at the edge cases.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔧</div>
+                <h3>Hardware Fingerprints</h3>
+                <p>Compare experiments across similar hardware configurations automatically.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📈</div>
+                <h3>Pattern Recognition</h3>
+                <p>Standardized failure modes reveal patterns across different projects.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🌐</div>
+                <h3>Open Access</h3>
+                <p>MIT licensed code. CC BY 4.0 data. Free forever for everyone.</p>
+            </div>
+        </div>
+    </div>
+    
     <footer>
-        <p>MIT (code) · CC BY 4.0 (data)</p>
+        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a> · MIT License</p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
