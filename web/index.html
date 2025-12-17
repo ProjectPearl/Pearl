@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f0f1a">
-    <title>PEARL - Real-World Robotics Data</title>
+    <meta name="theme-color" content="#141432">
+    <title>PEARL</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <nav>
-        <a href="index.html" class="active">Home</a>
-        <a href="submit.html">Submit</a>
-        <a href="experiments.html">Experiments</a>
-        <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
+        <a href="index.html" class="nav-logo">PEARL</a>
+        <div class="nav-links">
+            <a href="experiments.html">Experiments</a>
+            <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
+            <a href="submit.html" class="btn">Submit Data</a>
+        </div>
     </nav>
     
     <div class="hero">
-        <h1>Real-World <span>Robotics Data</span></h1>
-        <p>Open infrastructure for collecting physical experiment data. Document failures. Share learnings. Build better robots.</p>
-        <div class="cta-group">
-            <a href="submit.html" class="btn">Submit Experiment →</a>
-            <a href="experiments.html" class="btn secondary">Browse Data</a>
+        <div class="hero-content">
+            <h1>Building Better Robots</h1>
+            <p>We collect and share real-world robotics experiment data to advance embodied learning research</p>
+            <div class="hero-buttons">
+                <a href="experiments.html" class="btn">View Experiments</a>
+                <a href="submit.html" class="btn secondary">Submit Data</a>
+            </div>
         </div>
     </div>
     
@@ -29,27 +33,27 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="value" id="stat-total">0</div>
-                <div class="label">Experiments Logged</div>
+                <div class="label">experiments logged</div>
             </div>
             <div class="stat-card">
                 <div class="value" id="stat-failures">0</div>
-                <div class="label">Failures Documented</div>
+                <div class="label">failures documented</div>
             </div>
             <div class="stat-card">
                 <div class="value">100%</div>
-                <div class="label">Immutable</div>
+                <div class="label">immutable records</div>
             </div>
             <div class="stat-card">
                 <div class="value">v0.2</div>
-                <div class="label">Schema</div>
+                <div class="label">schema version</div>
             </div>
         </div>
     </div>
     
     <div class="features-section">
-        <div class="section-title">
+        <div class="section-header">
             <h2>Why PEARL?</h2>
-            <p>Real robots fail in ways simulations never predict. Capture that data.</p>
+            <p>Real robots fail in ways simulations never capture</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -60,27 +64,27 @@
             <div class="feature-card">
                 <div class="icon">🔒</div>
                 <h3>Immutable Records</h3>
-                <p>Once submitted, experiments cannot be edited. No hindsight bias allowed.</p>
+                <p>Once submitted, experiments cannot be edited. No hindsight bias.</p>
             </div>
             <div class="feature-card">
                 <div class="icon">❌</div>
                 <h3>Failures First</h3>
-                <p>Default view shows failures because learning happens at the edge cases.</p>
+                <p>Default view shows failures. Learning happens at the edge cases.</p>
             </div>
             <div class="feature-card">
                 <div class="icon">🔧</div>
                 <h3>Hardware Fingerprints</h3>
-                <p>Compare experiments across similar hardware configurations automatically.</p>
+                <p>Compare experiments across similar hardware configurations.</p>
             </div>
             <div class="feature-card">
                 <div class="icon">📈</div>
                 <h3>Pattern Recognition</h3>
-                <p>Standardized failure modes reveal patterns across different projects.</p>
+                <p>Standardized failure modes reveal patterns across projects.</p>
             </div>
             <div class="feature-card">
                 <div class="icon">🌐</div>
                 <h3>Open Access</h3>
-                <p>MIT licensed code. CC BY 4.0 data. Free forever for everyone.</p>
+                <p>MIT licensed code. CC BY 4.0 data. Free forever.</p>
             </div>
         </div>
     </div>

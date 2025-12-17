@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f0f1a">
+    <meta name="theme-color" content="#141432">
     <title>Submit - PEARL</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="submit.html" class="active">Submit</a>
-        <a href="experiments.html">Experiments</a>
-        <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
+        <a href="index.html" class="nav-logo">PEARL</a>
+        <div class="nav-links">
+            <a href="experiments.html">Experiments</a>
+            <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
+            <a href="submit.html" class="btn">Submit Data</a>
+        </div>
     </nav>
     
     <div class="page-header">
@@ -131,11 +133,11 @@
             <div class="form-section">
                 <h3>Notes</h3>
                 <label>
-                    <textarea name="notes" rows="3" placeholder="Optional observations or lessons learned"></textarea>
+                    <textarea name="notes" rows="3" placeholder="Optional observations"></textarea>
                 </label>
             </div>
             
-            <button type="submit" class="btn">Submit Experiment →</button>
+            <button type="submit" class="btn">Submit Experiment</button>
         </form>
         
         <div id="validation-result"></div>
@@ -203,7 +205,7 @@
             if (error) {
                 showMsg(error.message, 'error');
             } else {
-                showMsg('✓ Experiment submitted successfully', 'success');
+                showMsg('Experiment submitted successfully', 'success');
                 form.reset();
                 toggleFailureFields();
             }
