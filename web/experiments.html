@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a1a40">
+    <meta name="theme-color" content="#0e2b54">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <title>Experiments - PEARL</title>
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
     <nav>
         <a href="index.html" class="nav-logo">PEARL</a>
         <div class="nav-links">
+            <a href="about.html">About</a>
             <a href="experiments.html">Experiments</a>
             <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
             <a href="submit.html" class="btn">Submit Data</a>
@@ -19,40 +21,58 @@
     
     <div class="page-header">
         <h1>Experiments</h1>
-        <p>Browse submitted experiments · Failures shown first</p>
+        <p>Browse submitted experiments · Stored as GitHub Issues</p>
     </div>
     
     <div class="container">
         <div class="filters">
-            <button class="filter-btn active" onclick="filter('failures')">Failures</button>
+            <button class="filter-btn" onclick="filter('failures')">Failures</button>
             <button class="filter-btn" onclick="filter('successes')">Successes</button>
-            <button class="filter-btn" onclick="filter('all')">All</button>
+            <button class="filter-btn active" onclick="filter('all')">All</button>
         </div>
         
         <div id="list">
-            <div class="loading">Loading experiments...</div>
+            <div class="loading">Loading experiments from GitHub...</div>
         </div>
     </div>
     
-    <footer>
-        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a></p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
     <script>
-        const SUPABASE_URL = SUPABASE_CONFIG?.url || '';
-        const SUPABASE_KEY = SUPABASE_CONFIG?.anonKey || '';
-        let client, all = [], current = 'failures';
+        const GITHUB_REPO = 'ProjectPearl/Pearl';
+        let all = [], current = 'all';
         
         window.onload = async function() {
-            if (SUPABASE_URL && SUPABASE_KEY && typeof supabase !== 'undefined') {
-                client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                const { data } = await client.from('experiments').select('*').order('timestamp', { ascending: false }).limit(50);
-                all = data || [];
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues?labels=experiment&state=all&per_page=50`);
+                const issues = await response.json();
+                
+                if (!Array.isArray(issues)) {
+                    document.getElementById('list').innerHTML = '<div class="empty">Could not load experiments</div>';
+                    return;
+                }
+                
+                all = issues.map(issue => {
+                    // Parse the JSON from the issue body
+                    const jsonMatch = issue.body?.match(/```json\n([\s\S]*?)\n```/);
+                    let data = {};
+                    if (jsonMatch) {
+                        try {
+                            data = JSON.parse(jsonMatch[1]);
+                        } catch (e) {}
+                    }
+                    
+                    return {
+                        ...data,
+                        issue_number: issue.number,
+                        issue_url: issue.html_url,
+                        labels: issue.labels.map(l => l.name),
+                        isSuccess: issue.labels.some(l => l.name === 'success'),
+                        isFailure: issue.labels.some(l => l.name === 'failure')
+                    };
+                });
+                
                 render();
-            } else {
-                document.getElementById('list').innerHTML = '<div class="empty">Database not connected</div>';
+            } catch (e) {
+                document.getElementById('list').innerHTML = '<div class="empty">Error loading experiments. <a href="https://github.com/ProjectPearl/Pearl/issues?q=label%3Aexperiment" target="_blank">View on GitHub</a></div>';
             }
         };
         
@@ -65,26 +85,28 @@
         
         function render() {
             let items = [...all];
-            if (current === 'failures') items = items.filter(e => !e.outcome?.success);
-            else if (current === 'successes') items = items.filter(e => e.outcome?.success);
+            if (current === 'failures') items = items.filter(e => e.isFailure || e.outcome?.success === false);
+            else if (current === 'successes') items = items.filter(e => e.isSuccess || e.outcome?.success === true);
             
             if (!items.length) {
-                document.getElementById('list').innerHTML = '<div class="empty">No experiments found</div>';
+                document.getElementById('list').innerHTML = `<div class="empty">No experiments found. <a href="submit.html">Submit the first one!</a></div>`;
                 return;
             }
             
             document.getElementById('list').innerHTML = items.map(e => `
-                <div class="card ${e.outcome?.success ? 'ok' : 'fail'}">
-                    <div class="card-header">
-                        <span class="card-id">${e.experiment_id}</span>
-                        <span class="badge ${e.outcome?.success ? 'success' : 'failure'}">${e.outcome?.success ? 'Success' : 'Failed'}</span>
+                <a href="${e.issue_url}" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="card ${e.isSuccess || e.outcome?.success ? 'ok' : 'fail'}">
+                        <div class="card-header">
+                            <span class="card-id">${e.experiment_id || 'Experiment'}</span>
+                            <span class="badge ${e.isSuccess || e.outcome?.success ? 'success' : 'failure'}">${e.isSuccess || e.outcome?.success ? 'Success' : 'Failed'}</span>
+                        </div>
+                        <div class="card-meta">
+                            <span class="badge info">${e.task?.type || '—'}</span>
+                            ${e.hardware?.platform || '—'} · ${(e.outcome?.duration_seconds || 0).toFixed(1)}s · Reward: ${e.reward || 0}
+                        </div>
+                        ${e.outcome?.failure_mode ? `<div class="card-meta" style="margin-top:0.5rem;color:var(--error)">Failure: ${e.outcome.failure_mode.replace(/_/g, ' ')}</div>` : ''}
                     </div>
-                    <div class="card-meta">
-                        <span class="badge info">${e.task?.type || '—'}</span>
-                        ${e.hardware?.platform || '—'} · ${(e.outcome?.duration_seconds || 0).toFixed(1)}s · Reward: ${e.reward || 0}
-                    </div>
-                    ${e.outcome?.failure_mode ? `<div class="card-meta" style="margin-top:0.5rem;color:var(--error)">Failure: ${e.outcome.failure_mode.replace(/_/g, ' ')}</div>` : ''}
-                </div>
+                </a>
             `).join('');
         }
     </script>

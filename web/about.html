@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0e2b54">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>About | PEARL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            margin: 0;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        a { color: #0e2b54; }
+        a:hover { text-decoration: underline; }
+        
+        /* Header */
+        .header {
+            height: 200px;
+            background: linear-gradient(16deg, #0e2b54, #0e2b54);
+            position: relative;
+        }
+        
+        .header-bar {
+            padding: 18px;
+            display: flex;
+            max-width: 1000px;
+            z-index: 9999;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            justify-content: space-between;
+        }
+        
+        .site-title {
+            font-weight: 700;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-item {
+            color: white;
+            display: flex;
+            z-index: 9999;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        a.nav-menu-item {
+            margin: 0 20px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        a.nav-menu-item:hover {
+            text-decoration: underline;
+        }
+        
+        .nav-button {
+            color: white;
+            padding: 10px 16px;
+            border: 1px solid white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+        
+        .nav-button:hover {
+            background: white;
+            color: #0e2b54;
+            text-decoration: none;
+        }
+        
+        .header-input-section {
+            position: absolute;
+            text-align: center;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            bottom: 50%;
+            width: 100%;
+        }
+        
+        .header-title {
+            color: white;
+            text-align: center;
+            font-size: 23px;
+        }
+        
+        .header-title h1 {
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            margin-top: 50px;
+            padding: 0px 25px 80px;
+        }
+        
+        /* Body text */
+        .body-p {
+            font-size: 18px;
+            margin-bottom: 24px;
+            line-height: 1.9;
+            color: #333;
+            text-align: justify;
+        }
+        
+        /* Footer */
+        .footer {
+            min-height: 150px;
+            background: #0e2b54;
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            color: white;
+            padding: 30px calc((100% - 1000px) / 2);
+        }
+        
+        .col-3 {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px 30px;
+        }
+        
+        .col-3 h2 {
+            margin-bottom: 10px;
+        }
+        
+        .footer-link a {
+            color: white;
+            margin-top: 8px;
+            display: block;
+            text-align: right;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .col-1 {
+            flex-basis: 100%;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 700px) {
+            .header-title h1 { font-size: 1.8rem; }
+            .nav-menu { margin-top: 10px; width: 100%; }
+            .body-p { font-size: 16px; text-align: left; }
+            .col-3:nth-child(2) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-bar">
+            <div class="nav-item">
+                <a href="index.html" style="text-decoration: none;">
+                    <div class="site-title">PEARL</div>
+                </a>
+            </div>
+            <div class="nav-item nav-menu">
+                <a href="about.html" class="nav-menu-item">About</a>
+                <a href="experiments.html" class="nav-menu-item">Experiments</a>
+                <a href="submit.html" class="nav-button">Submit Data</a>
+            </div>
+        </div>
+        <div class="header-input-section">
+            <div class="header-title">
+                <h1>About PEARL</h1>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <p class="body-p">
+            PEARL is an open-source project aimed at building a shared dataset of real-world robotics experiments. The project exists because most progress in robotics and embodied learning relies on simulation or tightly controlled lab environments, which fail to capture the realities that dominate physical systems. Real robots deal with sensor noise, mechanical wear, power instability, environmental variation, and unexpected interactions with the world. These factors are precisely what make learning in the physical world hard, and yet they are rarely documented in a structured, reusable way.
+        </p>
+        <p class="body-p">
+            In practice, builders and researchers repeatedly encounter the same failures while working with physical robots: unstable control loops, slipping wheels, miscalibrated sensors, motors saturating under load, or systems that work perfectly in simulation but fail immediately on hardware. These failures are usually solved locally and then forgotten. As a result, learning does not accumulate across projects, labs, or individuals. Each new builder repeats the same trial-and-error process in isolation. PEARL was created to break this cycle by making real-world experimentation cumulative rather than siloed.
+        </p>
+        <p class="body-p">
+            At its core, PEARL is a platform and dataset for logging individual real-world robotics experiments conducted on physical hardware. Each experiment represents a single attempt at a task, such as balancing, navigating, grasping, or locomotion, and is recorded using a strict, versioned schema. Submissions include the task definition, hardware configuration, environment context, outcome, and a quantitative performance signal. Failed experiments are treated as first-class data, not as noise to be filtered out. In fact, failures are prioritized, because they carry more information about the limits of physical systems than successes do.
+        </p>
+        <p class="body-p">
+            To maintain data integrity, PEARL enforces immutability: once an experiment is submitted, it cannot be edited or deleted. This prevents hindsight bias and preserves the original conditions under which the experiment was conducted. All submissions must pass strict schema validation, and incomplete or loosely structured data is rejected. The goal is not to maximize the number of entries, but to ensure that every experiment in the dataset is meaningful, interpretable, and comparable. All code is released under the MIT license and all data under CC BY 4.0, making PEARL free and open for anyone to use, study, or build upon.
+        </p>
+        <p class="body-p">
+            A key aspect of PEARL is its focus on standardized task definitions and failure modes. Experiments are categorized into canonical tasks such as balance, navigation, grasping, and tracking, and failed runs must specify a failure mode from a shared ontology. This structure makes it possible to identify patterns across different robots and environments, for example, whether certain hardware configurations consistently fail due to mechanical slip, control instability, or power limitations. Each experiment also includes a hardware fingerprint derived from structured hardware metadata, allowing results to be aggregated across similar builds without requiring identical setups.
+        </p>
+        <p class="body-p">
+            PEARL is intentionally model-agnostic. It does not provide pre-trained machine learning models, simulation data, or polished benchmarks. Instead, it focuses on building the missing infrastructure that real-world learning depends on: high-quality, structured records of what actually happens when robots interact with the physical world. The dataset can support failure analysis, reproducibility studies, curriculum design for embodied learning systems, and research into the gap between simulation and reality. Models and algorithms can come later, but only once the underlying data exists.
+        </p>
+        <p class="body-p">
+            Ultimately, PEARL is not a product or a demo. It is an attempt to treat physical experimentation with the same seriousness that software development gives to version control and open collaboration. By making failures visible, structured, and shareable, PEARL aims to help real-world robotics learning progress in a way that is cumulative, honest, and grounded in reality.
+        </p>
+    </div>
+    
+    <div class="footer">
+        <div class="col-3">
+            <h2>PEARL</h2>
+            <p style="font-size: 14px; margin-top: 5px;">An open-source initiative for real-world robotics data.</p>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3">
+            <div class="footer-link"><a href="index.html">Home</a></div>
+            <div class="footer-link"><a href="about.html">About</a></div>
+            <div class="footer-link"><a href="experiments.html">Experiments</a></div>
+            <div class="footer-link"><a href="submit.html">Submit Data</a></div>
+            <div class="footer-link"><a href="https://github.com/ProjectPearl/Pearl">GitHub</a></div>
+        </div>
+    </div>
+</body>
+</html>

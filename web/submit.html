@@ -4,174 +4,391 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0e2b54">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <title>Submit - PEARL</title>
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
+    <style>
+        /* Submit Page - ModerateHatespeech Style */
+        .submit-section {
+            background: white;
+            min-height: calc(100vh - 70px);
+            padding: 6rem 3rem;
+            margin-top: 70px;
+        }
+        
+        .submit-container {
+            max-width: 950px;
+            margin: 0 auto;
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .submit-left {
+            flex: 1;
+            min-width: 280px;
+        }
+        
+        .submit-left h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0e2b54;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .submit-left p {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        .submit-right {
+            flex: 1;
+            min-width: 320px;
+        }
+        
+        .demo-form {
+            background: white;
+        }
+        
+        .demo-textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 1px solid #0e2b54;
+            border-radius: 3px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            color: #333;
+            background: white;
+        }
+        
+        .demo-textarea:focus {
+            border-color: #0e2b54;
+        }
+        
+        .demo-textarea::placeholder {
+            color: #999;
+        }
+        
+        .demo-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #0e2b54;
+            border-radius: 3px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            margin-bottom: 12px;
+            outline: none;
+            color: #333;
+            background: white;
+        }
+        
+        .demo-input:focus {
+            border-color: #0e2b54;
+        }
+        
+        .demo-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #0e2b54;
+            border-radius: 3px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            margin-bottom: 12px;
+            outline: none;
+            color: #333;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .demo-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .demo-row > * {
+            flex: 1;
+        }
+        
+        .demo-group {
+            margin-bottom: 12px;
+        }
+        
+        .demo-label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .demo-label.required::after {
+            content: ' *';
+            color: #b30000;
+        }
+        
+        .demo-group {
+            margin-bottom: 12px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: #0e2b54;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background: #0a2244;
+        }
+        
+        .submit-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        
+        .form-divider {
+            font-size: 13px;
+            color: #999;
+            margin: 20px 0 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        #validation-result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 3px;
+            font-size: 15px;
+        }
+        
+        #validation-result.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        #validation-result.error {
+            background: #ffebee;
+            color: #b30000;
+        }
+        
+        /* Footer override for white page */
+        .submit-footer {
+            background: #0e2b54;
+            padding: 2rem 3rem;
+            text-align: center;
+        }
+        
+        .submit-footer p {
+            color: white;
+            font-size: 14px;
+        }
+        
+        .submit-footer a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .submit-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 700px) {
+            .submit-section {
+                padding: 5rem 1.5rem 3rem;
+            }
+            .submit-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .submit-left h1 {
+                font-size: 1.8rem;
+            }
+            .demo-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav>
         <a href="index.html" class="nav-logo">PEARL</a>
         <div class="nav-links">
+            <a href="about.html">About</a>
             <a href="experiments.html">Experiments</a>
             <a href="https://github.com/ProjectPearl/Pearl" target="_blank">GitHub</a>
             <a href="submit.html" class="btn">Submit Data</a>
         </div>
     </nav>
     
-    <div class="page-header">
-        <h1>Submit Experiment</h1>
-        <p>Records are permanent and cannot be edited</p>
-    </div>
-    
-    <div class="form-container">
-        <form id="experiment-form">
-            <div class="form-section">
-                <h3>Basic Info</h3>
-                <div class="form-row">
-                    <label>
-                        <span class="required">Experiment ID</span>
-                        <input type="text" name="experiment_id" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_balance_test">
-                    </label>
-                    <label>
-                        <span class="required">Contributor</span>
-                        <input type="text" name="contributor" required placeholder="github_username">
-                    </label>
-                </div>
+    <div class="submit-section">
+        <div class="submit-container">
+            <div class="submit-left">
+                <h1>Submit Your Experiment</h1>
+                <p>Share your robotics experiment data with the community. All submissions are permanent and immutable — document your failures and successes to help others learn.</p>
             </div>
             
-            <div class="form-section">
-                <h3>Task</h3>
-                <label>
-                    <span class="required">Type</span>
-                    <select name="task_type" required>
-                        <option value="">Select task type...</option>
-                        <option value="balance">Balance</option>
-                        <option value="navigation">Navigation</option>
-                        <option value="grasping">Grasping</option>
-                        <option value="locomotion">Locomotion</option>
-                        <option value="tracking">Tracking</option>
-                        <option value="avoidance">Avoidance</option>
-                        <option value="other">Other</option>
-                    </select>
-                </label>
-                <label>
-                    <span class="required">Description</span>
-                    <textarea name="task_description" required minlength="10" placeholder="What was the robot trying to do?"></textarea>
-                </label>
-            </div>
-            
-            <div class="form-section">
-                <h3>Hardware</h3>
-                <div class="form-row">
-                    <label>
-                        <span class="required">Platform</span>
-                        <input type="text" name="platform" required placeholder="2-wheel differential">
-                    </label>
-                    <label>
-                        <span class="required">MCU</span>
-                        <input type="text" name="mcu" required placeholder="ESP32">
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>
-                        <span class="required">Motors</span>
-                        <input type="text" name="motors" required placeholder="N20 DC 6V">
-                    </label>
-                    <label>
-                        <span class="required">Power</span>
-                        <input type="text" name="power_source" required placeholder="2S LiPo 7.4V">
-                    </label>
-                </div>
-                <label>
-                    <span class="required">Sensors</span>
-                    <input type="text" name="sensors" required placeholder="MPU6050, HC-SR04 (comma separated)">
-                </label>
-                <label>
-                    <span class="required">Actuators</span>
-                    <input type="text" name="actuators" required placeholder="DC motor x2, servo (comma separated)">
-                </label>
-            </div>
-            
-            <div class="form-section">
-                <h3>Outcome</h3>
-                <div class="form-row">
-                    <label>
-                        <span class="required">Result</span>
-                        <select name="success" required>
-                            <option value="false">Failed</option>
-                            <option value="true">Succeeded</option>
-                        </select>
-                    </label>
-                    <label>
-                        <span class="required">Duration (s)</span>
-                        <input type="number" name="duration_seconds" required min="0" step="0.1" placeholder="0">
-                    </label>
-                    <label>
-                        <span class="required">Reward</span>
-                        <input type="number" name="reward" required step="0.01" placeholder="0">
-                    </label>
-                </div>
-                
-                <div id="failure-fields">
-                    <label>
-                        <span class="required">Failure Mode</span>
-                        <select name="failure_mode" required>
-                            <option value="">Select failure mode...</option>
-                            <option value="control_instability">Control Instability</option>
-                            <option value="mechanical_slip">Mechanical Slip</option>
-                            <option value="perception_error">Perception Error</option>
-                            <option value="actuator_saturation">Actuator Saturation</option>
-                            <option value="power_dropout">Power Dropout</option>
-                            <option value="sensor_noise">Sensor Noise</option>
-                            <option value="collision">Collision</option>
-                            <option value="timeout">Timeout</option>
+            <div class="submit-right">
+                <form id="experiment-form" class="demo-form">
+                    <div class="demo-row">
+                        <div class="demo-group">
+                            <label class="demo-label required">Experiment ID</label>
+                            <small style="display: block; color: #888; font-size: 12px; margin-bottom: 6px;">Format: 4 digits + underscore + description (e.g. 0001_balance_test)</small>
+                            <input type="text" name="experiment_id" class="demo-input" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_balance_test">
+                        </div>
+                        <div class="demo-group">
+                            <label class="demo-label required">Contributor</label>
+                            <small style="display: block; color: #888; font-size: 12px; margin-bottom: 6px;">Include your GitHub link (optional)</small>
+                            <input type="text" name="contributor" class="demo-input" required placeholder="github_username">
+                        </div>
+                    </div>
+                    
+                    <div class="form-divider">Task</div>
+                    
+                    <div class="demo-row">
+                        <div class="demo-group">
+                            <label class="demo-label required">Type</label>
+                            <select name="task_type" class="demo-select" required>
+                                <option value="">Select...</option>
+                                <option value="balance">Balance</option>
+                                <option value="navigation">Navigation</option>
+                                <option value="grasping">Grasping</option>
+                                <option value="locomotion">Locomotion</option>
+                                <option value="tracking">Tracking</option>
+                                <option value="avoidance">Avoidance</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="demo-group">
+                            <label class="demo-label required">Result</label>
+                            <select name="success" class="demo-select" required>
+                                <option value="false">Failed</option>
+                                <option value="true">Succeeded</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-group">
+                        <label class="demo-label required">Task Description</label>
+                        <textarea name="task_description" class="demo-textarea" required minlength="10" placeholder="What was the robot trying to do?"></textarea>
+                    </div>
+                    
+                    <div class="form-divider">Hardware</div>
+                    
+                    <div class="demo-row">
+                        <div class="demo-group">
+                            <label class="demo-label required">Platform</label>
+                            <input type="text" name="platform" class="demo-input" required placeholder="2-wheel differential">
+                        </div>
+                        <div class="demo-group">
+                            <label class="demo-label required">MCU</label>
+                            <input type="text" name="mcu" class="demo-input" required placeholder="ESP32">
+                        </div>
+                    </div>
+                    
+                    <div class="demo-row">
+                        <div class="demo-group">
+                            <label class="demo-label required">Motors</label>
+                            <input type="text" name="motors" class="demo-input" required placeholder="N20 DC 6V">
+                        </div>
+                        <div class="demo-group">
+                            <label class="demo-label required">Power</label>
+                            <input type="text" name="power_source" class="demo-input" required placeholder="2S LiPo 7.4V">
+                        </div>
+                    </div>
+                    
+                    <div class="demo-group">
+                        <label class="demo-label required">Sensors</label>
+                        <input type="text" name="sensors" class="demo-input" required placeholder="MPU6050, HC-SR04 (comma separated)">
+                    </div>
+                    
+                    <div class="demo-group">
+                        <label class="demo-label required">Actuators</label>
+                        <input type="text" name="actuators" class="demo-input" required placeholder="DC motor x2, servo (comma separated)">
+                    </div>
+                    
+                    <div class="form-divider">Outcome</div>
+                    
+                    <div class="demo-row">
+                        <div class="demo-group">
+                            <label class="demo-label required">Duration (seconds)</label>
+                            <input type="number" name="duration_seconds" class="demo-input" required min="0" step="0.1" placeholder="0">
+                        </div>
+                        <div class="demo-group">
+                            <label class="demo-label required">Reward</label>
+                            <input type="number" name="reward" class="demo-input" required step="0.01" placeholder="0">
+                        </div>
+                    </div>
+                    
+                    <div id="failure-fields">
+                        <div class="demo-group">
+                            <label class="demo-label required">Failure Mode</label>
+                            <select name="failure_mode" class="demo-select" required>
+                                <option value="">Select failure mode...</option>
+                                <option value="control_instability">Control Instability</option>
+                                <option value="mechanical_slip">Mechanical Slip</option>
+                                <option value="perception_error">Perception Error</option>
+                                <option value="actuator_saturation">Actuator Saturation</option>
+                                <option value="power_dropout">Power Dropout</option>
+                                <option value="sensor_noise">Sensor Noise</option>
+                                <option value="collision">Collision</option>
+                                <option value="timeout">Timeout</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-divider">Code (Optional)</div>
+                    
+                    <div class="demo-group">
+                        <label class="demo-label">Source Code</label>
+                        <textarea name="code" class="demo-textarea" style="font-family: monospace; font-size: 13px; min-height: 120px;" placeholder="// Paste your experiment code here"></textarea>
+                    </div>
+                    
+                    <div class="demo-group">
+                        <label class="demo-label">Language</label>
+                        <select name="code_language" class="demo-select">
+                            <option value="">None</option>
+                            <option value="arduino">Arduino/C++</option>
+                            <option value="python">Python</option>
+                            <option value="micropython">MicroPython</option>
+                            <option value="rust">Rust</option>
                             <option value="other">Other</option>
                         </select>
-                    </label>
-                </div>
+                    </div>
+                    
+                    <div class="form-divider">Notes (Optional)</div>
+                    
+                    <div class="demo-group">
+                        <textarea name="notes" class="demo-textarea" style="min-height: 80px;" placeholder="Any additional observations..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Submit Experiment</button>
+                </form>
+                
+                <div id="validation-result"></div>
             </div>
-            
-            <div class="form-section">
-                <h3>Code</h3>
-                <label>
-                    <span>Source Code (optional)</span>
-                    <textarea name="code" rows="10" class="code-input" placeholder="// Paste your experiment code here (Arduino, Python, etc.)"></textarea>
-                </label>
-                <label>
-                    <span>Language</span>
-                    <select name="code_language">
-                        <option value="">None</option>
-                        <option value="arduino">Arduino/C++</option>
-                        <option value="python">Python</option>
-                        <option value="micropython">MicroPython</option>
-                        <option value="rust">Rust</option>
-                        <option value="other">Other</option>
-                    </select>
-                </label>
-            </div>
-            
-            <div class="form-section">
-                <h3>Notes</h3>
-                <label>
-                    <textarea name="notes" rows="3" placeholder="Optional observations"></textarea>
-                </label>
-            </div>
-            
-            <button type="submit" class="btn">Submit Experiment</button>
-        </form>
-        
-        <div id="validation-result"></div>
+        </div>
     </div>
     
-    <footer>
-        <p>PEARL · <a href="https://github.com/ProjectPearl/Pearl">GitHub</a></p>
-    </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
     <script>
-        const SUPABASE_URL = (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG?.url) ? SUPABASE_CONFIG.url : '';
-        const SUPABASE_KEY = (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG?.anonKey) ? SUPABASE_CONFIG.anonKey : '';
-        let supabaseClient = null;
+        const GITHUB_REPO = 'ProjectPearl/Pearl';
         
         function toggleFailureFields() {
             const isSuccess = document.querySelector('select[name="success"]').value === 'true';
@@ -183,14 +400,11 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            if (SUPABASE_URL && SUPABASE_KEY && typeof supabase !== 'undefined') {
-                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            }
             document.querySelector('select[name="success"]').addEventListener('change', toggleFailureFields);
             toggleFailureFields();
         });
         
-        document.getElementById('experiment-form').addEventListener('submit', async function(e) {
+        document.getElementById('experiment-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
             const success = form.success.value === 'true';
@@ -216,24 +430,56 @@
             
             if (!success) data.outcome.failure_mode = form.failure_mode.value;
             
-            if (!supabaseClient) {
-                showMsg('Database not connected', 'error');
-                return;
-            }
+            // Create GitHub Issue
+            const title = `[Experiment] ${data.experiment_id} - ${data.task.type} (${success ? 'Success' : 'Failure'})`;
+            const labels = success ? 'experiment,success' : 'experiment,failure';
             
-            const { error } = await supabaseClient.from('experiments').insert([data]);
-            if (error) {
-                showMsg(error.message, 'error');
-            } else {
-                showMsg('Experiment submitted successfully', 'success');
-                form.reset();
-                toggleFailureFields();
-            }
+            const body = `## Experiment Data
+
+**ID:** ${data.experiment_id}
+**Contributor:** ${data.contributor}
+**Timestamp:** ${data.timestamp}
+
+### Task
+- **Type:** ${data.task.type}
+- **Description:** ${data.task.description}
+
+### Hardware
+- **Platform:** ${data.hardware.platform}
+- **MCU:** ${data.hardware.mcu}
+- **Motors:** ${data.hardware.motors}
+- **Power Source:** ${data.hardware.power_source}
+- **Sensors:** ${data.hardware.sensors.join(', ')}
+- **Actuators:** ${data.hardware.actuators.join(', ')}
+
+### Outcome
+- **Result:** ${success ? '✅ Success' : '❌ Failure'}
+- **Duration:** ${data.outcome.duration_seconds}s
+- **Reward:** ${data.reward}
+${!success ? `- **Failure Mode:** ${data.outcome.failure_mode}` : ''}
+
+${data.notes ? `### Notes\n${data.notes}` : ''}
+
+${data.code ? `### Code (${data.code.language})\n\`\`\`${data.code.language}\n${data.code.source}\n\`\`\`` : ''}
+
+---
+<details>
+<summary>Raw JSON</summary>
+
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\`
+</details>`;
+
+            const issueUrl = `https://github.com/${GITHUB_REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=${encodeURIComponent(labels)}`;
+            
+            window.open(issueUrl, '_blank');
+            showMsg('GitHub issue page opened. Please submit the issue to complete your submission.', 'success');
         });
         
         function showMsg(msg, type) {
             const div = document.getElementById('validation-result');
-            div.className = 'validation-result ' + type;
+            div.className = type;
             div.textContent = msg;
         }
     </script>
