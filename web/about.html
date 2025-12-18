@@ -4,176 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0e2b54">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>About | PEARL</title>
+    <meta name="description" content="About PEARL - Open-source real-world robotics experiment data">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <title>About - PEARL</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            font-family: 'Outfit', -apple-system, sans-serif;
-            margin: 0;
-            color: #333;
-            line-height: 1.8;
-        }
-        
-        a { color: #0e2b54; }
-        a:hover { text-decoration: underline; }
-        
-        /* Header */
-        .header {
-            height: 200px;
-            background: linear-gradient(16deg, #0e2b54, #0e2b54);
-            position: relative;
-        }
-        
-        .header-bar {
-            padding: 18px;
-            display: flex;
-            max-width: 1000px;
-            z-index: 9999;
-            flex-wrap: wrap;
-            margin: 0 auto;
-            justify-content: space-between;
-        }
-        
-        .site-title {
-            font-weight: 700;
-            font-size: 24px;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .nav-item {
-            color: white;
-            display: flex;
-            z-index: 9999;
-            flex-wrap: wrap;
-        }
-        
-        .nav-menu {
-            display: flex;
-            align-items: center;
-        }
-        
-        a.nav-menu-item {
-            margin: 0 20px;
-            color: white;
-            text-decoration: none;
-        }
-        
-        a.nav-menu-item:hover {
-            text-decoration: underline;
-        }
-        
-        .nav-button {
-            color: white;
-            padding: 10px 16px;
-            border: 1px solid white;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 3px;
-        }
-        
-        .nav-button:hover {
-            background: white;
-            color: #0e2b54;
-            text-decoration: none;
-        }
-        
-        .header-input-section {
-            position: absolute;
-            text-align: center;
-            left: 50%;
-            transform: translate(-50%, 50%);
-            bottom: 50%;
-            width: 100%;
-        }
-        
-        .header-title {
-            color: white;
-            text-align: center;
-            font-size: 23px;
-        }
-        
-        .header-title h1 {
-            margin-bottom: 15px;
-            font-size: 2.5rem;
-        }
-        
-        /* Container */
-        .container {
-            max-width: 750px;
-            margin: 0 auto;
-            margin-top: 50px;
-            padding: 0px 25px 80px;
-        }
-        
-        /* Body text */
-        .body-p {
-            font-size: 18px;
-            margin-bottom: 24px;
-            line-height: 1.9;
-            color: #333;
-            text-align: justify;
-        }
-        
-        /* Footer */
-        .footer {
-            min-height: 150px;
-            background: #0e2b54;
-            margin-top: 50px;
-            display: flex;
-            flex-wrap: wrap;
-            color: white;
-            padding: 30px calc((100% - 1000px) / 2);
-        }
-        
-        .col-3 {
-            flex: 1;
-            min-width: 250px;
-            padding: 20px 30px;
-        }
-        
-        .col-3 h2 {
-            margin-bottom: 10px;
-        }
-        
-        .footer-link a {
-            color: white;
-            margin-top: 8px;
-            display: block;
-            text-align: right;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link a:hover {
-            text-decoration: underline;
-        }
-        
-        .col-1 {
-            flex-basis: 100%;
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        
-        /* Responsive */
-        @media (max-width: 700px) {
-            .header-title h1 { font-size: 1.8rem; }
-            .nav-menu { margin-top: 10px; width: 100%; }
-            .body-p { font-size: 16px; text-align: left; }
-            .col-3:nth-child(2) { display: none; }
-        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Outfit',-apple-system,sans-serif;margin:0;color:#333;line-height:1.8}
+        a{color:#0e2b54}
+        a:hover{text-decoration:underline}
+        .header{height:200px;background:#0e2b54;position:relative}
+        .header-bar{padding:18px;display:flex;max-width:1000px;z-index:9999;flex-wrap:wrap;margin:0 auto;justify-content:space-between}
+        .site-title{font-weight:700;font-size:24px;color:white;text-decoration:none}
+        .nav-item{color:white;display:flex;z-index:9999;flex-wrap:wrap}
+        .nav-menu{display:flex;align-items:center}
+        a.nav-menu-item{margin:0 20px;color:white;text-decoration:none}
+        a.nav-menu-item:hover{text-decoration:underline}
+        .nav-button{color:white;padding:10px 16px;border:1px solid white;text-decoration:none;font-weight:600;border-radius:3px}
+        .nav-button:hover{background:white;color:#0e2b54;text-decoration:none}
+        .header-input-section{position:absolute;text-align:center;left:50%;transform:translate(-50%,50%);bottom:50%;width:100%}
+        .header-title{color:white;text-align:center;font-size:23px}
+        .header-title h1{margin-bottom:15px;font-size:2.5rem}
+        .container{max-width:750px;margin:0 auto;margin-top:50px;padding:0 25px 80px}
+        .body-p{font-size:18px;margin-bottom:24px;line-height:1.9;color:#333;text-align:justify}
+        .footer{min-height:150px;background:#0e2b54;margin-top:50px;display:flex;flex-wrap:wrap;color:white;padding:30px calc((100% - 1000px)/2)}
+        .col-3{flex:1;min-width:250px;padding:20px 30px}
+        .col-3 h2{margin-bottom:10px}
+        .footer-link a{color:white;margin-top:8px;display:block;text-align:right;text-decoration:none;font-size:14px}
+        .footer-link a:hover{text-decoration:underline}
+        @media(max-width:700px){.header-title h1{font-size:1.8rem}.nav-menu{margin-top:10px;width:100%}.body-p{font-size:16px;text-align:left}.col-3:nth-child(2){display:none}}
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-bar">
             <div class="nav-item">
-                <a href="index.html" style="text-decoration: none;">
+                <a href="index.html" style="text-decoration:none">
                     <div class="site-title">PEARL</div>
                 </a>
             </div>
@@ -189,7 +59,6 @@
             </div>
         </div>
     </div>
-    
     <div class="container">
         <p class="body-p">
             PEARL is an open-source project aimed at building a shared dataset of real-world robotics experiments. The project exists because most progress in robotics and embodied learning relies on simulation or tightly controlled lab environments, which fail to capture the realities that dominate physical systems. Real robots deal with sensor noise, mechanical wear, power instability, environmental variation, and unexpected interactions with the world. These factors are precisely what make learning in the physical world hard, and yet they are rarely documented in a structured, reusable way.
@@ -213,11 +82,10 @@
             Ultimately, PEARL is not a product or a demo. It is an attempt to treat physical experimentation with the same seriousness that software development gives to version control and open collaboration. By making failures visible, structured, and shareable, PEARL aims to help real-world robotics learning progress in a way that is cumulative, honest, and grounded in reality.
         </p>
     </div>
-    
     <div class="footer">
         <div class="col-3">
             <h2>PEARL</h2>
-            <p style="font-size: 14px; margin-top: 5px;">An open-source initiative for real-world robotics data.</p>
+            <p style="font-size:14px;margin-top:5px">An open-source initiative for real-world robotics data.</p>
         </div>
         <div class="col-3"></div>
         <div class="col-3">
@@ -225,7 +93,7 @@
             <div class="footer-link"><a href="about.html">About</a></div>
             <div class="footer-link"><a href="experiments.html">Experiments</a></div>
             <div class="footer-link"><a href="submit.html">Submit Data</a></div>
-            <div class="footer-link"><a href="https://github.com/ProjectPearl/Pearl">GitHub</a></div>
+            <div class="footer-link"><a href="https://github.com/ProjectPearl/Pearl" target="_blank" rel="noopener noreferrer">GitHub</a></div>
         </div>
     </div>
 </body>
