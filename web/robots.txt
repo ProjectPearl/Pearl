@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://projectpearl.github.io/Pearl/sitemap.xml
+
