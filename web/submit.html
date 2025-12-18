@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0e2b54">
     <meta name="description" content="Submit your robotics experiment to PEARL">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -11,103 +11,98 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <title>Submit - PEARL</title>
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=9">
     <style>
         .submit-section {
             background: white;
-            min-height: calc(100vh - 70px);
-            padding: 6rem 3rem;
-            margin-top: 70px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 4.5rem 1.25rem 2rem;
         }
         .submit-container {
-            max-width: 950px;
+            max-width: 500px;
             margin: 0 auto;
-            display: flex;
-            gap: 60px;
-            flex-wrap: wrap;
         }
-        .submit-left {
-            flex: 1;
-            min-width: 280px;
+        .submit-header {
+            margin-bottom: 1.5rem;
         }
-        .submit-left h1 {
-            font-size: 2.5rem;
+        .submit-header h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: 700;
             color: #0e2b54;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
             line-height: 1.2;
         }
-        .submit-left p {
-            font-size: 1.1rem;
-            color: #444;
-            line-height: 1.7;
-        }
-        .submit-right {
-            flex: 1;
-            min-width: 320px;
+        .submit-header p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
         }
         .demo-form {
             background: white;
         }
         .demo-textarea {
             width: 100%;
-            min-height: 180px;
-            padding: 15px;
-            border: 1px solid #0e2b54;
-            border-radius: 3px;
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 16px;
-            resize: none;
+            resize: vertical;
             outline: none;
             color: #333;
             background: white;
+            -webkit-appearance: none;
         }
         .demo-textarea:focus {
             border-color: #0e2b54;
         }
         .demo-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #0e2b54;
-            border-radius: 3px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 0;
             outline: none;
             color: #333;
             background: white;
+            -webkit-appearance: none;
         }
         .demo-input:focus {
             border-color: #0e2b54;
         }
         .demo-select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #0e2b54;
-            border-radius: 3px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 16px;
-            margin-bottom: 12px;
             outline: none;
             color: #333;
             background: white;
             cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
         }
         .demo-row {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-            align-items: flex-end;
-        }
-        .demo-row > * {
-            flex: 1;
         }
         .demo-group {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         .demo-label {
             display: block;
             font-size: 14px;
-            color: #666;
+            color: #333;
             margin-bottom: 6px;
             font-weight: 500;
         }
@@ -118,7 +113,7 @@
         .demo-hint {
             display: block;
             color: #888;
-            font-size: 12px;
+            font-size: 11px;
             margin-bottom: 6px;
         }
         .submit-btn {
@@ -127,34 +122,34 @@
             background: #0e2b54;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 6px;
             font-family: 'Outfit', sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
             transition: background 0.2s;
+            -webkit-appearance: none;
         }
         .submit-btn:hover {
             background: #0a2244;
         }
-        .submit-btn:disabled {
-            background: #999;
-            cursor: not-allowed;
+        .submit-btn:active {
+            transform: scale(0.98);
         }
         .form-divider {
-            font-size: 13px;
-            color: #999;
-            margin: 20px 0 15px;
+            font-size: 12px;
+            color: #888;
+            margin: 24px 0 16px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         #validation-result {
-            margin-top: 15px;
+            margin-top: 16px;
             padding: 12px;
-            border-radius: 3px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 14px;
         }
         #validation-result.success {
             background: #e8f5e9;
@@ -164,20 +159,21 @@
             background: #ffebee;
             color: #b30000;
         }
-        @media (max-width: 700px) {
+        @media (max-width: 500px) {
+            .demo-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+        @media (min-width: 769px) {
             .submit-section {
-                padding: 5rem 1.5rem 3rem;
+                padding: 6rem 3rem 3rem;
             }
             .submit-container {
-                flex-direction: column;
-                gap: 30px;
+                max-width: 600px;
             }
-            .submit-left h1 {
-                font-size: 1.8rem;
-            }
-            .demo-row {
-                flex-direction: column;
-                gap: 0;
+            .submit-header h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -185,6 +181,11 @@
 <body>
     <nav>
         <a href="index.html" class="nav-logo">PEARL</a>
+        <button class="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="nav-links">
             <a href="about.html">About</a>
             <a href="experiments.html">Experiments</a>
@@ -194,142 +195,157 @@
     </nav>
     <div class="submit-section">
         <div class="submit-container">
-            <div class="submit-left">
-                <h1>Submit Your Experiment</h1>
-                <p>Share your robotics experiment data with the community. All submissions are permanent and immutable.</p>
+            <div class="submit-header">
+                <h1>Submit Experiment</h1>
+                <p>Share your robotics experiment with the community.</p>
             </div>
-            <div class="submit-right">
-                <form id="experiment-form" class="demo-form" autocomplete="off">
-                    <div class="demo-row">
-                        <div class="demo-group">
-                            <label class="demo-label required">Experiment ID</label>
-                            <small class="demo-hint">Format: 4 digits + underscore + description (e.g. 0001_balance_test)</small>
-                            <input type="text" name="experiment_id" class="demo-input" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_balance_test" maxlength="100">
-                        </div>
-                        <div class="demo-group">
-                            <label class="demo-label required">Contributor</label>
-                            <small class="demo-hint">Include your GitHub link (optional)</small>
-                            <input type="text" name="contributor" class="demo-input" required placeholder="github_username" maxlength="100">
-                        </div>
-                    </div>
-                    <div class="form-divider">Task</div>
-                    <div class="demo-row">
-                        <div class="demo-group">
-                            <label class="demo-label required">Type</label>
-                            <select name="task_type" class="demo-select" required>
-                                <option value="">Select...</option>
-                                <option value="balance">Balance</option>
-                                <option value="navigation">Navigation</option>
-                                <option value="grasping">Grasping</option>
-                                <option value="locomotion">Locomotion</option>
-                                <option value="tracking">Tracking</option>
-                                <option value="avoidance">Avoidance</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="demo-group">
-                            <label class="demo-label required">Result</label>
-                            <select name="success" class="demo-select" required>
-                                <option value="false">Failed</option>
-                                <option value="true">Succeeded</option>
-                            </select>
-                        </div>
+            <form id="experiment-form" class="demo-form" autocomplete="off">
+                <div class="demo-row">
+                    <div class="demo-group">
+                        <label class="demo-label required">Experiment ID</label>
+                        <small class="demo-hint">e.g. 0001_balance_test</small>
+                        <input type="text" name="experiment_id" class="demo-input" required pattern="[0-9]{4}_[a-zA-Z0-9_]+" placeholder="0001_balance_test" maxlength="100">
                     </div>
                     <div class="demo-group">
-                        <label class="demo-label required">Task Description</label>
-                        <textarea name="task_description" class="demo-textarea" required minlength="10" maxlength="2000" placeholder="What was the robot trying to do?"></textarea>
+                        <label class="demo-label required">Contributor</label>
+                        <small class="demo-hint">Your GitHub username</small>
+                        <input type="text" name="contributor" class="demo-input" required placeholder="github_username" maxlength="100">
                     </div>
-                    <div class="form-divider">Hardware</div>
-                    <div class="demo-row">
-                        <div class="demo-group">
-                            <label class="demo-label required">Platform</label>
-                            <input type="text" name="platform" class="demo-input" required placeholder="2-wheel differential" maxlength="100">
-                        </div>
-                        <div class="demo-group">
-                            <label class="demo-label required">MCU</label>
-                            <input type="text" name="mcu" class="demo-input" required placeholder="ESP32" maxlength="100">
-                        </div>
-                    </div>
-                    <div class="demo-row">
-                        <div class="demo-group">
-                            <label class="demo-label required">Motors</label>
-                            <input type="text" name="motors" class="demo-input" required placeholder="N20 DC 6V" maxlength="200">
-                        </div>
-                        <div class="demo-group">
-                            <label class="demo-label required">Power</label>
-                            <input type="text" name="power_source" class="demo-input" required placeholder="2S LiPo 7.4V" maxlength="100">
-                        </div>
-                    </div>
+                </div>
+                <div class="form-divider">Task</div>
+                <div class="demo-row">
                     <div class="demo-group">
-                        <label class="demo-label required">Sensors</label>
-                        <input type="text" name="sensors" class="demo-input" required placeholder="MPU6050, HC-SR04 (comma separated)" maxlength="500">
-                    </div>
-                    <div class="demo-group">
-                        <label class="demo-label required">Actuators</label>
-                        <input type="text" name="actuators" class="demo-input" required placeholder="DC motor x2, servo (comma separated)" maxlength="500">
-                    </div>
-                    <div class="form-divider">Outcome</div>
-                    <div class="demo-row">
-                        <div class="demo-group">
-                            <label class="demo-label required">Duration (seconds)</label>
-                            <input type="number" name="duration_seconds" class="demo-input" required min="0" max="86400" step="0.1" placeholder="0">
-                        </div>
-                        <div class="demo-group">
-                            <label class="demo-label required">Reward</label>
-                            <input type="number" name="reward" class="demo-input" required min="-1000000" max="1000000" step="0.01" placeholder="0">
-                        </div>
-                    </div>
-                    <div id="failure-fields">
-                        <div class="demo-group">
-                            <label class="demo-label required">Failure Mode</label>
-                            <select name="failure_mode" class="demo-select" required>
-                                <option value="">Select failure mode...</option>
-                                <option value="control_instability">Control Instability</option>
-                                <option value="mechanical_slip">Mechanical Slip</option>
-                                <option value="perception_error">Perception Error</option>
-                                <option value="actuator_saturation">Actuator Saturation</option>
-                                <option value="power_dropout">Power Dropout</option>
-                                <option value="sensor_noise">Sensor Noise</option>
-                                <option value="collision">Collision</option>
-                                <option value="timeout">Timeout</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-divider">Code (Optional)</div>
-                    <div class="demo-group">
-                        <label class="demo-label">Source Code</label>
-                        <textarea name="code" class="demo-textarea" style="font-family:monospace;font-size:13px;min-height:120px;" maxlength="50000" placeholder="Paste your experiment code here"></textarea>
-                    </div>
-                    <div class="demo-group">
-                        <label class="demo-label">Language</label>
-                        <select name="code_language" class="demo-select">
-                            <option value="">None</option>
-                            <option value="arduino">Arduino/C++</option>
-                            <option value="python">Python</option>
-                            <option value="micropython">MicroPython</option>
-                            <option value="rust">Rust</option>
+                        <label class="demo-label required">Type</label>
+                        <select name="task_type" class="demo-select" required>
+                            <option value="">Select...</option>
+                            <option value="balance">Balance</option>
+                            <option value="navigation">Navigation</option>
+                            <option value="grasping">Grasping</option>
+                            <option value="locomotion">Locomotion</option>
+                            <option value="tracking">Tracking</option>
+                            <option value="avoidance">Avoidance</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <div class="form-divider">Notes (Optional)</div>
                     <div class="demo-group">
-                        <textarea name="notes" class="demo-textarea" style="min-height:80px;" maxlength="5000" placeholder="Any additional observations..."></textarea>
+                        <label class="demo-label required">Result</label>
+                        <select name="success" class="demo-select" required>
+                            <option value="false">Failed</option>
+                            <option value="true">Succeeded</option>
+                        </select>
                     </div>
-                    <button type="submit" class="submit-btn">Submit Experiment</button>
-                </form>
-                <div id="validation-result"></div>
-            </div>
+                </div>
+                <div class="demo-group">
+                    <label class="demo-label required">Task Description</label>
+                    <textarea name="task_description" class="demo-textarea" required minlength="10" maxlength="2000" placeholder="What was the robot trying to do?"></textarea>
+                </div>
+                <div class="form-divider">Hardware</div>
+                <div class="demo-row">
+                    <div class="demo-group">
+                        <label class="demo-label required">Platform</label>
+                        <input type="text" name="platform" class="demo-input" required placeholder="2-wheel differential" maxlength="100">
+                    </div>
+                    <div class="demo-group">
+                        <label class="demo-label required">MCU</label>
+                        <input type="text" name="mcu" class="demo-input" required placeholder="ESP32" maxlength="100">
+                    </div>
+                </div>
+                <div class="demo-row">
+                    <div class="demo-group">
+                        <label class="demo-label required">Motors</label>
+                        <input type="text" name="motors" class="demo-input" required placeholder="N20 DC 6V" maxlength="200">
+                    </div>
+                    <div class="demo-group">
+                        <label class="demo-label required">Power</label>
+                        <input type="text" name="power_source" class="demo-input" required placeholder="2S LiPo 7.4V" maxlength="100">
+                    </div>
+                </div>
+                <div class="demo-group">
+                    <label class="demo-label required">Sensors</label>
+                    <input type="text" name="sensors" class="demo-input" required placeholder="MPU6050, HC-SR04" maxlength="500">
+                </div>
+                <div class="demo-group">
+                    <label class="demo-label required">Actuators</label>
+                    <input type="text" name="actuators" class="demo-input" required placeholder="DC motor x2, servo" maxlength="500">
+                </div>
+                <div class="form-divider">Outcome</div>
+                <div class="demo-row">
+                    <div class="demo-group">
+                        <label class="demo-label required">Duration (s)</label>
+                        <input type="number" name="duration_seconds" class="demo-input" required min="0" max="86400" step="0.1" placeholder="0">
+                    </div>
+                    <div class="demo-group">
+                        <label class="demo-label required">Reward</label>
+                        <input type="number" name="reward" class="demo-input" required min="-1000000" max="1000000" step="0.01" placeholder="0">
+                    </div>
+                </div>
+                <div id="failure-fields">
+                    <div class="demo-group">
+                        <label class="demo-label required">Failure Mode</label>
+                        <select name="failure_mode" class="demo-select" required>
+                            <option value="">Select failure mode...</option>
+                            <option value="control_instability">Control Instability</option>
+                            <option value="mechanical_slip">Mechanical Slip</option>
+                            <option value="perception_error">Perception Error</option>
+                            <option value="actuator_saturation">Actuator Saturation</option>
+                            <option value="power_dropout">Power Dropout</option>
+                            <option value="sensor_noise">Sensor Noise</option>
+                            <option value="collision">Collision</option>
+                            <option value="timeout">Timeout</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-divider">Code (Optional)</div>
+                <div class="demo-group">
+                    <label class="demo-label">Source Code</label>
+                    <textarea name="code" class="demo-textarea" style="font-family:monospace;font-size:14px;min-height:100px;" maxlength="50000" placeholder="Paste your code here"></textarea>
+                </div>
+                <div class="demo-group">
+                    <label class="demo-label">Language</label>
+                    <select name="code_language" class="demo-select">
+                        <option value="">None</option>
+                        <option value="arduino">Arduino/C++</option>
+                        <option value="python">Python</option>
+                        <option value="micropython">MicroPython</option>
+                        <option value="rust">Rust</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-divider">Notes (Optional)</div>
+                <div class="demo-group">
+                    <textarea name="notes" class="demo-textarea" style="min-height:80px;" maxlength="5000" placeholder="Additional observations..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Experiment</button>
+            </form>
+            <div id="validation-result"></div>
         </div>
     </div>
     <script>
     (function() {
         'use strict';
-        const REPO = 'ProjectPearl/Pearl';
+        var toggle = document.querySelector('.menu-toggle');
+        var navLinks = document.querySelector('.nav-links');
+        toggle.addEventListener('click', function() {
+            toggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+        navLinks.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+                toggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        var REPO = 'ProjectPearl/Pearl';
 
         function sanitize(str) {
             if (typeof str !== 'string') return '';
-            return str.replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+            return str.replace(/[<>&"']/g, function(c) {
+                return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c];
+            });
         }
 
         function trim(str) {
@@ -337,16 +353,16 @@
         }
 
         function toggleFailureFields() {
-            const isSuccess = document.querySelector('select[name="success"]').value === 'true';
-            const fields = document.getElementById('failure-fields');
-            const select = document.querySelector('select[name="failure_mode"]');
+            var isSuccess = document.querySelector('select[name="success"]').value === 'true';
+            var fields = document.getElementById('failure-fields');
+            var select = document.querySelector('select[name="failure_mode"]');
             fields.style.display = isSuccess ? 'none' : 'block';
             select.required = !isSuccess;
             if (isSuccess) select.value = '';
         }
 
         function showMessage(msg, type) {
-            const div = document.getElementById('validation-result');
+            var div = document.getElementById('validation-result');
             div.className = type;
             div.textContent = msg;
         }
@@ -358,10 +374,10 @@
 
         document.getElementById('experiment-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const form = e.target;
-            const success = form.success.value === 'true';
+            var form = e.target;
+            var success = form.success.value === 'true';
 
-            const data = {
+            var data = {
                 experiment_id: trim(form.experiment_id.value),
                 timestamp: new Date().toISOString(),
                 contributor: trim(form.contributor.value),
@@ -374,8 +390,8 @@
                     mcu: trim(form.mcu.value),
                     motors: trim(form.motors.value),
                     power_source: trim(form.power_source.value),
-                    sensors: form.sensors.value.split(',').map(s => s.trim()).filter(Boolean),
-                    actuators: form.actuators.value.split(',').map(s => s.trim()).filter(Boolean)
+                    sensors: form.sensors.value.split(',').map(function(s) { return s.trim(); }).filter(Boolean),
+                    actuators: form.actuators.value.split(',').map(function(s) { return s.trim(); }).filter(Boolean)
                 },
                 outcome: {
                     success: success,
@@ -399,49 +415,35 @@
                 data.notes = trim(form.notes.value);
             }
 
-            const title = `[Experiment] ${sanitize(data.experiment_id)} - ${sanitize(data.task.type)} (${success ? 'Success' : 'Failure'})`;
-            const labels = success ? 'experiment,success' : 'experiment,failure';
+            var title = '[Experiment] ' + sanitize(data.experiment_id) + ' - ' + sanitize(data.task.type) + ' (' + (success ? 'Success' : 'Failure') + ')';
+            var labels = success ? 'experiment,success' : 'experiment,failure';
 
-            const body = `## Experiment Data
+            var body = '## Experiment Data\n\n' +
+                '**ID:** ' + sanitize(data.experiment_id) + '\n' +
+                '**Contributor:** ' + sanitize(data.contributor) + '\n' +
+                '**Timestamp:** ' + data.timestamp + '\n\n' +
+                '### Task\n' +
+                '- **Type:** ' + sanitize(data.task.type) + '\n' +
+                '- **Description:** ' + sanitize(data.task.description) + '\n\n' +
+                '### Hardware\n' +
+                '- **Platform:** ' + sanitize(data.hardware.platform) + '\n' +
+                '- **MCU:** ' + sanitize(data.hardware.mcu) + '\n' +
+                '- **Motors:** ' + sanitize(data.hardware.motors) + '\n' +
+                '- **Power Source:** ' + sanitize(data.hardware.power_source) + '\n' +
+                '- **Sensors:** ' + data.hardware.sensors.map(sanitize).join(', ') + '\n' +
+                '- **Actuators:** ' + data.hardware.actuators.map(sanitize).join(', ') + '\n\n' +
+                '### Outcome\n' +
+                '- **Result:** ' + (success ? 'Success' : 'Failure') + '\n' +
+                '- **Duration:** ' + data.outcome.duration_seconds + 's\n' +
+                '- **Reward:** ' + data.reward + '\n' +
+                (!success ? '- **Failure Mode:** ' + sanitize(data.outcome.failure_mode) + '\n' : '') +
+                (data.notes ? '\n### Notes\n' + sanitize(data.notes) + '\n' : '') +
+                (data.code ? '\n### Code (' + sanitize(data.code.language) + ')\n```' + sanitize(data.code.language) + '\n' + data.code.source + '\n```\n' : '') +
+                '\n---\n<details>\n<summary>Raw JSON</summary>\n\n```json\n' + JSON.stringify(data, null, 2) + '\n```\n</details>';
 
-**ID:** ${sanitize(data.experiment_id)}
-**Contributor:** ${sanitize(data.contributor)}
-**Timestamp:** ${data.timestamp}
-
-### Task
-- **Type:** ${sanitize(data.task.type)}
-- **Description:** ${sanitize(data.task.description)}
-
-### Hardware
-- **Platform:** ${sanitize(data.hardware.platform)}
-- **MCU:** ${sanitize(data.hardware.mcu)}
-- **Motors:** ${sanitize(data.hardware.motors)}
-- **Power Source:** ${sanitize(data.hardware.power_source)}
-- **Sensors:** ${data.hardware.sensors.map(sanitize).join(', ')}
-- **Actuators:** ${data.hardware.actuators.map(sanitize).join(', ')}
-
-### Outcome
-- **Result:** ${success ? 'Success' : 'Failure'}
-- **Duration:** ${data.outcome.duration_seconds}s
-- **Reward:** ${data.reward}
-${!success ? `- **Failure Mode:** ${sanitize(data.outcome.failure_mode)}` : ''}
-
-${data.notes ? `### Notes\n${sanitize(data.notes)}` : ''}
-
-${data.code ? `### Code (${sanitize(data.code.language)})\n\`\`\`${sanitize(data.code.language)}\n${data.code.source}\n\`\`\`` : ''}
-
----
-<details>
-<summary>Raw JSON</summary>
-
-\`\`\`json
-${JSON.stringify(data, null, 2)}
-\`\`\`
-</details>`;
-
-            const issueUrl = `https://github.com/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=${encodeURIComponent(labels)}`;
+            var issueUrl = 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(body) + '&labels=' + encodeURIComponent(labels);
             window.open(issueUrl, '_blank', 'noopener,noreferrer');
-            showMessage('GitHub issue page opened. Please submit the issue to complete your submission.', 'success');
+            showMessage('GitHub issue page opened. Please submit the issue to complete.', 'success');
         });
     })();
     </script>

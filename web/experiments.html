@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0e2b54">
     <meta name="description" content="Browse robotics experiments submitted to PEARL">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -11,11 +11,16 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <title>Experiments - PEARL</title>
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
     <nav>
         <a href="index.html" class="nav-logo">PEARL</a>
+        <button class="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="nav-links">
             <a href="about.html">About</a>
             <a href="experiments.html">Experiments</a>
@@ -40,31 +45,46 @@
     <script>
     (function() {
         'use strict';
-        const REPO = 'ProjectPearl/Pearl';
-        let experiments = [];
-        let currentFilter = 'all';
+        var toggle = document.querySelector('.menu-toggle');
+        var navLinks = document.querySelector('.nav-links');
+        toggle.addEventListener('click', function() {
+            toggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+        navLinks.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+                toggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        var REPO = 'ProjectPearl/Pearl';
+        var experiments = [];
+        var currentFilter = 'all';
 
         function sanitize(str) {
             if (typeof str !== 'string') return '';
-            const div = document.createElement('div');
+            var div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
 
         function parseExperiment(issue) {
             try {
-                const match = issue.body?.match(/```json\n([\s\S]*?)\n```/);
+                var match = issue.body && issue.body.match(/```json\n([\s\S]*?)\n```/);
                 if (!match) return null;
-                const data = JSON.parse(match[1]);
+                var data = JSON.parse(match[1]);
                 return {
                     id: sanitize(data.experiment_id || ''),
-                    task: data.task?.type || '',
-                    platform: data.hardware?.platform || '',
-                    duration: data.outcome?.duration_seconds || 0,
+                    task: data.task && data.task.type || '',
+                    platform: data.hardware && data.hardware.platform || '',
+                    duration: data.outcome && data.outcome.duration_seconds || 0,
                     reward: data.reward || 0,
-                    success: issue.labels.some(l => l.name === 'success'),
-                    failure: issue.labels.some(l => l.name === 'failure'),
-                    failureMode: data.outcome?.failure_mode || '',
+                    success: issue.labels.some(function(l) { return l.name === 'success'; }),
+                    failure: issue.labels.some(function(l) { return l.name === 'failure'; }),
+                    failureMode: data.outcome && data.outcome.failure_mode || '',
                     url: issue.html_url
                 };
             } catch (e) {
@@ -73,54 +93,53 @@
         }
 
         function render() {
-            let items = experiments;
-            if (currentFilter === 'failures') items = items.filter(e => e.failure || !e.success);
-            else if (currentFilter === 'successes') items = items.filter(e => e.success);
+            var items = experiments;
+            if (currentFilter === 'failures') items = items.filter(function(e) { return e.failure || !e.success; });
+            else if (currentFilter === 'successes') items = items.filter(function(e) { return e.success; });
 
-            const list = document.getElementById('list');
+            var list = document.getElementById('list');
             if (!items.length) {
                 list.innerHTML = '<div class="empty">No experiments found. <a href="submit.html">Submit the first one!</a></div>';
                 return;
             }
 
-            list.innerHTML = items.map(e => `
-                <a href="${sanitize(e.url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
-                    <div class="card ${e.success ? 'ok' : 'fail'}">
-                        <div class="card-header">
-                            <span class="card-id">${sanitize(e.id) || 'Experiment'}</span>
-                            <span class="badge ${e.success ? 'success' : 'failure'}">${e.success ? 'Success' : 'Failed'}</span>
-                        </div>
-                        <div class="card-meta">
-                            <span class="badge info">${sanitize(e.task)}</span>
-                            ${sanitize(e.platform)} · ${e.duration.toFixed(1)}s · Reward: ${e.reward}
-                        </div>
-                        ${e.failureMode ? `<div class="card-meta" style="margin-top:0.5rem;color:var(--error)">Failure: ${sanitize(e.failureMode.replace(/_/g, ' '))}</div>` : ''}
-                    </div>
-                </a>
-            `).join('');
+            list.innerHTML = items.map(function(e) {
+                return '<a href="' + sanitize(e.url) + '" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">' +
+                    '<div class="card ' + (e.success ? 'ok' : 'fail') + '">' +
+                        '<div class="card-header">' +
+                            '<span class="card-id">' + (sanitize(e.id) || 'Experiment') + '</span>' +
+                            '<span class="badge ' + (e.success ? 'success' : 'failure') + '">' + (e.success ? 'Success' : 'Failed') + '</span>' +
+                        '</div>' +
+                        '<div class="card-meta">' +
+                            '<span class="badge info">' + sanitize(e.task) + '</span> ' +
+                            sanitize(e.platform) + ' · ' + e.duration.toFixed(1) + 's · Reward: ' + e.reward +
+                        '</div>' +
+                        (e.failureMode ? '<div class="card-meta" style="margin-top:0.5rem;color:var(--error)">Failure: ' + sanitize(e.failureMode.replace(/_/g, ' ')) + '</div>' : '') +
+                    '</div>' +
+                '</a>';
+            }).join('');
         }
 
         window.filter = function(f) {
             currentFilter = f;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
             event.target.classList.add('active');
             render();
         };
 
-        async function init() {
-            try {
-                const res = await fetch(`https://api.github.com/repos/${REPO}/issues?labels=experiment&state=all&per_page=50`);
+        fetch('https://api.github.com/repos/' + REPO + '/issues?labels=experiment&state=all&per_page=50')
+            .then(function(res) {
                 if (!res.ok) throw new Error('API error');
-                const issues = await res.json();
+                return res.json();
+            })
+            .then(function(issues) {
                 if (!Array.isArray(issues)) throw new Error('Invalid response');
                 experiments = issues.map(parseExperiment).filter(Boolean);
                 render();
-            } catch (e) {
-                document.getElementById('list').innerHTML = `<div class="empty">Error loading experiments. <a href="https://github.com/${REPO}/issues?q=label%3Aexperiment" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>`;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', init);
+            })
+            .catch(function(e) {
+                document.getElementById('list').innerHTML = '<div class="empty">Error loading experiments. <a href="https://github.com/' + REPO + '/issues?q=label%3Aexperiment" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>';
+            });
     })();
     </script>
 </body>
